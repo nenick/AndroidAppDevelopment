@@ -2,6 +2,9 @@ package com.example.app;
 
 import android.app.Application;
 
+import com.example.app.dagger.AndroidModule;
+import com.example.app.dagger.DomainModule;
+import com.example.app.dagger.PresenterModule;
 import com.example.shared.dagger.DaggerSupport;
 
 import java.util.Arrays;

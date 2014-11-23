@@ -1,4 +1,4 @@
-package com.example.app;
+package com.example.app.dagger;
 import java.lang.annotation.Retention;
 import javax.inject.Qualifier;
 

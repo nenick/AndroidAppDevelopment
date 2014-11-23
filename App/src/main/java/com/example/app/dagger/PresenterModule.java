@@ -1,4 +1,4 @@
-package com.example.app;
+package com.example.app.dagger;
 
 import com.example.domain.interactor.GetUserDetailsUseCase;
 import com.example.domain.interactor.GetUserDetailsUseCaseImpl;

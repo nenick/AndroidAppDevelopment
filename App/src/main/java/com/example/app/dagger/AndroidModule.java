@@ -1,7 +1,10 @@
-package com.example.app;
+package com.example.app.dagger;
 
 import android.content.Context;
 import android.location.LocationManager;
+
+import com.example.app.ExampleApplication;
+
 import dagger.Module;
 import dagger.Provides;
 import javax.inject.Singleton;
@@ -28,7 +31,7 @@ public class AndroidModule {
         return application;
     }
 
-    @Provides @Singleton LocationManager provideLocationManager() {
+    /*@Provides @Singleton LocationManager provideLocationManager() {
         return (LocationManager) application.getSystemService(LOCATION_SERVICE);
-    }
+    }*/
 }
