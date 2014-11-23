@@ -1,0 +1,11 @@
+/*
+include the buildscript dependency and apply this gradle script with: apply from: 'path/name.gradle'
+
+buildscript {
+    dependencies {
+        classpath "com.neenbedankt.gradle.plugins:android-apt:1.2"
+    }
+}
+*/
+
+

@@ -1,0 +1,16 @@
+/*
+include the buildscript dependency and apply this gradle script with: apply from: 'path/name.gradle'
+
+buildscript {
+    dependencies {
+        classpath "com.neenbedankt.gradle.plugins:android-apt:1.2"
+    }
+}
+*/
+apply plugin: 'android-apt'
+
+dependencies {
+    apt 'com.squareup.dagger:dagger-compiler:1.2.2'
+    compile 'com.squareup.dagger:dagger:1.2.2'
+}
+

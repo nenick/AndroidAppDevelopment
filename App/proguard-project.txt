@@ -1,0 +1,17 @@
+# Add project specific ProGuard rules here.
+# By default, the flags in this file are appended to flags specified
+# in ${sdk.dir}/tools/proguard/proguard-android.txt
+# You can edit the include path and order by changing the ProGuard
+# include property in project.properties.
+#
+# For more details, see
+#   http://developer.android.com/guide/developing/tools/proguard.html
+
+-dontwarn org.springframework.**
+-dontwarn org.joda.**
+-dontwarn org.w3c.dom.bootstrap.**
+-dontwarn javax.**
+-dontwarn sun.misc.Unsafe
+-dontwarn org.hamcrest.**
+-dontwarn com.google.android.apps.common.testing.**
+-dontwarn android.app.**
