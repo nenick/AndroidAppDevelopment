@@ -2,7 +2,7 @@
 # Rapid start development and test
 with Android Studio, Gradle, Espresso, Robolectric, AndroidAnnotations, JaCoCo
 
-[![Build Status](https://travis-ci.org/nenick/AndroidAppDevelopment.svg)](https://travis-ci.org/nenick/android-gradle-template) **& UnitTest** [![Coverage Status](https://coveralls.io/repos/nenick/AndroidAppDevelopment/badge.png)](https://coveralls.io/r/nenick/AndroidAppDevelopment)
+[![Build Status](https://travis-ci.org/nenick/AndroidAppDevelopment.svg)](https://travis-ci.org/nenick/AndroidAppDevelopment) **& UnitTest** [![Coverage Status](https://coveralls.io/repos/nenick/AndroidAppDevelopment/badge.png)](https://coveralls.io/r/nenick/AndroidAppDevelopment)
 
 ***Wishes, improvements and discussions about the stuff here are welcome***
 
