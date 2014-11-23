@@ -8,12 +8,16 @@ import com.example.data.entity.UserEntity;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
+
+import org.androidannotations.annotations.EBean;
+
 import java.lang.reflect.Type;
 import java.util.Collection;
 
 /**
  * Class used to transform from Strings representing json to valid objects.
  */
+@EBean
 public class UserEntityJsonMapper {
 
   private final Gson gson;

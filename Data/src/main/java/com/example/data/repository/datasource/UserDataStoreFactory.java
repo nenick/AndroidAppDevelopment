@@ -8,7 +8,6 @@ import android.content.Context;
 
 import com.example.data.cache.UserCache;
 import com.example.data.cache.UserCacheImpl;
-import com.example.data.entity.mapper.UserEntityJsonMapper;
 import com.example.data.network.RestApi;
 import com.example.data.network.RestApiImpl;
 
@@ -27,6 +26,9 @@ public class UserDataStoreFactory {
 
     @Bean(UserCacheImpl.class)
     protected UserCache userCache;
+
+    @Bean(RestApiImpl.class)
+    protected RestApi restApi;
 
     /**
      * Create {@link UserDataStore} from a user id.
@@ -47,9 +49,6 @@ public class UserDataStoreFactory {
      * Create {@link UserDataStore} to retrieve data from the Cloud.
      */
     public UserDataStore createCloudDataStore() {
-        UserEntityJsonMapper userEntityJsonMapper = new UserEntityJsonMapper();
-        RestApi restApi = new RestApiImpl(this.context, userEntityJsonMapper);
-
         return new CloudUserDataStore(restApi, this.userCache);
     }
 }
