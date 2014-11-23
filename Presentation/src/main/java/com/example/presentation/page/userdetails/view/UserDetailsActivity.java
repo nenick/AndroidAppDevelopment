@@ -11,7 +11,6 @@ import android.view.Window;
 
 import com.example.presentation.R;
 import com.example.presentation.base.view.BaseActivity;
-import com.example.presentation.view.fragment.UserDetailsFragment_;
 
 /**
  * Activity that shows details of a certain user.

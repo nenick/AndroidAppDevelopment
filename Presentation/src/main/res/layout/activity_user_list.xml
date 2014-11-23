@@ -4,7 +4,7 @@
     >
 
   <fragment
-      android:name="com.example.presentation.view.fragment.UserListFragment_"
+      android:name="com.example.presentation.page.userlist.view.UserListFragment_"
       android:id="@+id/fragmentUserList"
       android:layout_width="match_parent"
       android:layout_height="match_parent"

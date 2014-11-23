@@ -13,24 +13,30 @@ import android.widget.Toast;
  */
 public abstract class BaseFragment extends Fragment {
 
-  @Override public void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setRetainInstance(true);
-    initializePresenter();
-  }
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
 
-  /**
-   * Initializes the {@link com.example.presentation.base.presenter.Presenter}
-   * for this fragment in a MVP pattern used to architect the application presentation layer.
-   */
-  protected abstract void initializePresenter();
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        initializePresenter();
+    }
 
-  /**
-   * Shows a {@link android.widget.Toast} message.
-   *
-   * @param message An string representing a message to be shown.
-   */
-  protected void showToastMessage(String message) {
-    Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-  }
+    /**
+     * Initializes the {@link com.example.presentation.base.presenter.Presenter}
+     * for this fragment in a MVP pattern used to architect the application presentation layer.
+     */
+    protected abstract void initializePresenter();
+
+    /**
+     * Shows a {@link android.widget.Toast} message.
+     *
+     * @param message An string representing a message to be shown.
+     */
+    protected void showToastMessage(String message) {
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+    }
 }

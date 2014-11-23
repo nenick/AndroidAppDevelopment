@@ -7,7 +7,6 @@ package com.example.presentation.page.userlist.presenter;
 import com.example.domain.interactor.GetUserListUseCase;
 import com.example.presentation.base.presenter.Presenter;
 import com.example.presentation.exception.ErrorMessageFactory;
-import com.example.presentation.mapper.UserModelDataMapper;
 import com.example.presentation.page.userlist.view.UserListView;
 import com.example.presentation.page.userlist.view.UserModel;
 import com.example.shared.dagger.DaggerSupport;

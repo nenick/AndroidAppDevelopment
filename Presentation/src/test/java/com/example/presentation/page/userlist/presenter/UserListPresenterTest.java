@@ -2,15 +2,12 @@
  * Copyright (C) 2014 android10.org. All rights reserved.
  * @author Fernando Cejas (the android10 coder)
  */
-package com.example.presentation.presenter;
+package com.example.presentation.page.userlist.presenter;
 
 import android.content.Context;
 
 import com.example.domain.interactor.GetUserListUseCase;
 import com.example.presentation.PresentationSpec;
-import com.example.presentation.mapper.UserModelDataMapper;
-import com.example.presentation.page.userlist.GetUserListUseCaseCallback;
-import com.example.presentation.page.userlist.presenter.UserListPresenter;
 import com.example.presentation.page.userlist.view.UserListView;
 
 import org.junit.Before;

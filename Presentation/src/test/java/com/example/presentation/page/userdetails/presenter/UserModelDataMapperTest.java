@@ -2,10 +2,10 @@
  * Copyright (C) 2014 android10.org. All rights reserved.
  * @author Fernando Cejas (the android10 coder)
  */
-package com.example.presentation.mapper;
+package com.example.presentation.page.userdetails.presenter;
 
 import com.example.presentation.PresentationSpec;
-import com.example.presentation.model.UserModel;
+import com.example.presentation.page.userdetails.view.UserModel;
 import com.example.shared.model.User;
 
 import org.junit.Before;
