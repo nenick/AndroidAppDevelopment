@@ -1,26 +1,14 @@
 
-# Branch Description
-
-Current I'm trying to copy the pattern from https://github.com/android10/Android-CleanArchitecture and combine this with my favourite development tools and test setup. Work in progress ...
-
 # Rapid start development and test
-with Android Studio, Gradle, Espresso, Robolectric, AndroidAnnotations, RoboCoP, JaCoCo
+with Android Studio, Gradle, Espresso, Robolectric, AndroidAnnotations, JaCoCo
 
-[![Build Status](https://travis-ci.org/nenick/android-gradle-template.svg?branch=clean-architecture)](https://travis-ci.org/nenick/android-gradle-template) **& UnitTest** [![Coverage Status](https://coveralls.io/repos/nenick/android-gradle-template/badge.png?branch=clean-architecture)](https://coveralls.io/r/nenick/android-gradle-template?branch=clean-architecture)
+[![Build Status](https://travis-ci.org/nenick/AndroidAppDevelopment.svg)](https://travis-ci.org/nenick/android-gradle-template) **& UnitTest** [![Coverage Status](https://coveralls.io/repos/nenick/AndroidAppDevelopment/badge.png)](https://coveralls.io/r/nenick/AndroidAppDevelopment)
 
 ***Wishes, improvements and discussions about the stuff here are welcome***
 
-[see also wiki for more help](https://github.com/nenick/android-gradle-template/wiki)
+[see also wiki for more help](https://github.com/nenick/AndroidAppDevelopment/wiki)
 
-## Choose your favourite way
-
-### Tests in a seperated module
-
-Switch to the branch https://github.com/nenick/android-gradle-template/tree/novoda for more informations
-
-### Tests in the same module
-
-I'm prefer https://github.com/JCAndKSolutions/android-unit-test to support robolectric because it integrates much better through the extra created IDE Plugin.
+More simple project templates can be found at https://github.com/nenick/android-gradle-template
 
 ## Getting Started
 
@@ -38,7 +26,7 @@ install the plugin https://github.com/evant/android-studio-unit-test-plugin you 
 
 This project template support AndroidStudio.
 
-Run tests in Android Studio need some configuration:  [see wiki for description](https://github.com/nenick/android-gradle-template/wiki/Tests-in-Android-Studio---IntellJ)
+Run tests in Android Studio need some configuration:  [see wiki for description](https://github.com/nenick/AndroidAppDevelopment/wiki/Tests-in-Android-Studio---IntellJ)
 
 ## Tests on command line
 
@@ -100,3 +88,7 @@ Currently RestActivity example fails when no server is reachable.
 * run-tests.sh execute all test variants
 * run-tests-fast.sh execute just the robolectric tests
 * run-tests-travis.sh do all steps necessary for full automatic builds, like install custom dependencies
+
+# Some notes
+
+The base example is copied from https://github.com/android10/Android-CleanArchitecture I have only combined this with my favourite development tools and test setup.
