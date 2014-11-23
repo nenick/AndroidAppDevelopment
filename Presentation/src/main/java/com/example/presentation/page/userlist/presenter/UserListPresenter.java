@@ -2,19 +2,19 @@
  * Copyright (C) 2014 android10.org. All rights reserved.
  * @author Fernando Cejas (the android10 coder)
  */
-package com.example.presentation.presenter;
+package com.example.presentation.page.userlist.presenter;
 
 import com.example.domain.interactor.GetUserListUseCase;
+import com.example.presentation.base.presenter.Presenter;
 import com.example.presentation.exception.ErrorMessageFactory;
 import com.example.presentation.mapper.UserModelDataMapper;
-import com.example.presentation.model.UserModel;
-import com.example.presentation.view.UserListView;
+import com.example.presentation.page.userlist.view.UserListView;
+import com.example.presentation.page.userlist.view.UserModel;
 import com.example.shared.dagger.DaggerSupport;
 import com.example.shared.exception.ErrorBundle;
 import com.example.shared.model.User;
 
 
-import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
@@ -25,7 +25,7 @@ import javax.inject.Inject;
 
 
 /**
- * {@link Presenter} that controls communication between views and models of the presentation
+ * {@link com.example.presentation.base.presenter.Presenter} that controls communication between views and models of the presentation
  * layer.
  */
 @EBean

@@ -87,7 +87,7 @@ dependencies {
 }
 
 def coverageSourceDirs = [
-        'App/src/main/java',
+//        'App/src/main/java',
         'Data/src/main/java',
         'DataRepository/src/main/java',
         'Domain/src/main/java',
@@ -95,8 +95,8 @@ def coverageSourceDirs = [
         'Presentation/src/main/java']
 
 task jacocoReport(type: JacocoReport) {
-    classDirectories  = fileTree(dir: 'App/build/intermediates/classes/debug', exclude: 'com/example/**/R*.class')
-    classDirectories += fileTree(dir: 'Data/build/intermediates/classes/debug', exclude: 'com/example/R*.class')
+    //classDirectories  = fileTree(dir: 'App/build/intermediates/classes/debug', exclude: 'com/example/**/R*.class')
+    classDirectories = fileTree(dir: 'Data/build/intermediates/classes/debug', exclude: 'com/example/R*.class')
     classDirectories += fileTree(dir: 'DataRepository/build/intermediates/classes/debug', exclude: 'com/example/R*.class')
     classDirectories += fileTree(dir: 'Domain/build/intermediates/classes/debug', exclude: 'com/example/R*.class')
     classDirectories += fileTree(dir: 'DomainInteractor/build/intermediates/classes/debug', exclude: 'com/example/R*.class')

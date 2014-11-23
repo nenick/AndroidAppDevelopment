@@ -2,16 +2,15 @@
  * Copyright (C) 2014 android10.org. All rights reserved.
  * @author Fernando Cejas (the android10 coder)
  */
-package com.example.presentation.view.activity;
+package com.example.presentation.page.userlist.view;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Window;
 import com.example.presentation.R;
-import com.example.presentation.model.UserModel;
+import com.example.presentation.base.view.BaseActivity;
 import com.example.presentation.navigation.Navigator;
-import com.example.presentation.view.fragment.UserListFragment;
 
 /**
  * Activity that shows a list of Users.

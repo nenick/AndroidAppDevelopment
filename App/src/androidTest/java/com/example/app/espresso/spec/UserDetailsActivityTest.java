@@ -9,7 +9,7 @@ import android.content.Intent;
 
 import com.example.app.espresso.support.EspressoSpec;
 import com.example.presentation.R;
-import com.example.presentation.view.activity.UserDetailsActivity;
+import com.example.presentation.page.userdetails.view.UserDetailsActivity;
 import com.google.android.apps.common.testing.ui.espresso.Espresso;
 
 import static com.google.android.apps.common.testing.ui.espresso.Espresso.onView;

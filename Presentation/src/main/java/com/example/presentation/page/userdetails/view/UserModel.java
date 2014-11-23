@@ -2,7 +2,7 @@
  * Copyright (C) 2014 android10.org. All rights reserved.
  * @author Fernando Cejas (the android10 coder)
  */
-package com.example.presentation.model;
+package com.example.presentation.page.userdetails.view;
 
 /**
  * Class that represents a user in the presentation layer.

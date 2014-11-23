@@ -6,8 +6,8 @@ package com.example.presentation.navigation;
 
 import android.content.Context;
 import android.content.Intent;
-import com.example.presentation.view.activity.UserDetailsActivity;
-import com.example.presentation.view.activity.UserListActivity;
+import com.example.presentation.page.userdetails.view.UserDetailsActivity;
+import com.example.presentation.page.userlist.view.UserListActivity;
 
 /**
  * Class used to navigate through the application.

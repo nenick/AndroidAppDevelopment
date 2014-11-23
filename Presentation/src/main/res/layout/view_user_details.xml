@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     >
 
-  <com.example.presentation.view.component.AutoLoadImageView
+  <com.example.presentation.page.userdetails.view.AutoLoadImageView
       android:id="@+id/iv_cover"
       android:layout_width="match_parent"
       android:layout_height="@dimen/iv_cover_height"

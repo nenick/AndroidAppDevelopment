@@ -9,7 +9,9 @@ import android.content.Context;
 import com.example.domain.interactor.GetUserDetailsUseCase;
 import com.example.presentation.PresentationSpec;
 import com.example.presentation.mapper.UserModelDataMapper;
-import com.example.presentation.view.UserDetailsView;
+import com.example.presentation.page.userdetails.GetUserDetailsUseCaseCallback;
+import com.example.presentation.page.userdetails.presenter.UserDetailsPresenter;
+import com.example.presentation.page.userdetails.view.UserDetailsView;
 
 import org.junit.Before;
 import org.junit.Test;

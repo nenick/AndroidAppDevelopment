@@ -2,7 +2,7 @@
  * Copyright (C) 2014 android10.org. All rights reserved.
  * @author Fernando Cejas (the android10 coder)
  */
-package com.example.presentation.view.adapter;
+package com.example.presentation.page.userlist.view;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import com.example.presentation.R;
-import com.example.presentation.model.UserModel;
 import java.util.Collection;
 import java.util.List;
 

@@ -2,9 +2,10 @@
  * Copyright (C) 2014 android10.org. All rights reserved.
  * @author Fernando Cejas (the android10 coder)
  */
-package com.example.presentation.view;
+package com.example.presentation.page.userlist.view;
 
-import com.example.presentation.model.UserModel;
+import com.example.presentation.base.view.LoadDataView;
+
 import java.util.Collection;
 
 /**

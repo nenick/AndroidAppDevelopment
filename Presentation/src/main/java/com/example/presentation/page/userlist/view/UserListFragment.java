@@ -2,7 +2,7 @@
  * Copyright (C) 2014 android10.org. All rights reserved.
  * @author Fernando Cejas (the android10 coder)
  */
-package com.example.presentation.view.fragment;
+package com.example.presentation.page.userlist.view;
 
 import android.app.Activity;
 import android.content.Context;
@@ -16,10 +16,8 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 import com.example.presentation.R;
-import com.example.presentation.model.UserModel;
-import com.example.presentation.presenter.UserListPresenter;
-import com.example.presentation.view.UserListView;
-import com.example.presentation.view.adapter.UsersAdapter;
+import com.example.presentation.base.view.BaseFragment;
+import com.example.presentation.page.userlist.presenter.UserListPresenter;
 
 
 import org.androidannotations.annotations.Bean;
@@ -83,7 +81,7 @@ public class UserListFragment extends BaseFragment implements UserListView {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        this.userListPresenter.initialize(this);
+        initializePresenter();
     }
 
     @Override
@@ -100,7 +98,7 @@ public class UserListFragment extends BaseFragment implements UserListView {
 
     @Override
     protected void initializePresenter() {
-
+        this.userListPresenter.initialize(this);
     }
 
     @Override

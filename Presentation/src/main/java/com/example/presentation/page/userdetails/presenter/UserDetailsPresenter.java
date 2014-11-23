@@ -2,13 +2,13 @@
  * Copyright (C) 2014 android10.org. All rights reserved.
  * @author Fernando Cejas (the android10 coder)
  */
-package com.example.presentation.presenter;
+package com.example.presentation.page.userdetails.presenter;
 
 import com.example.domain.interactor.GetUserDetailsUseCase;
+import com.example.presentation.base.presenter.Presenter;
 import com.example.presentation.exception.ErrorMessageFactory;
-import com.example.presentation.mapper.UserModelDataMapper;
-import com.example.presentation.model.UserModel;
-import com.example.presentation.view.UserDetailsView;
+import com.example.presentation.page.userdetails.view.UserDetailsView;
+import com.example.presentation.page.userdetails.view.UserModel;
 import com.example.shared.dagger.DaggerSupport;
 import com.example.shared.exception.ErrorBundle;
 import com.example.shared.model.User;
@@ -16,7 +16,6 @@ import com.example.shared.model.User;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
-import org.androidannotations.annotations.UiThread;
 
 import javax.inject.Inject;
 

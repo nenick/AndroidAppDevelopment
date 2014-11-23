@@ -2,7 +2,7 @@
  * Copyright (C) 2014 android10.org. All rights reserved.
  * @author Fernando Cejas (the android10 coder)
  */
-package com.example.presentation.view.fragment;
+package com.example.presentation.base.view;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -20,10 +20,10 @@ public abstract class BaseFragment extends Fragment {
   }
 
   /**
-   * Initializes the {@link com.example.presentation.presenter.Presenter}
+   * Initializes the {@link com.example.presentation.base.presenter.Presenter}
    * for this fragment in a MVP pattern used to architect the application presentation layer.
    */
-  abstract void initializePresenter();
+  protected abstract void initializePresenter();
 
   /**
    * Shows a {@link android.widget.Toast} message.

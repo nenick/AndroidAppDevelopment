@@ -1,4 +1,4 @@
-package com.example.presentation.presenter;
+package com.example.presentation.page.userlist.presenter;
 
 import com.example.domain.interactor.GetUserListUseCase;
 import com.example.shared.exception.ErrorBundle;

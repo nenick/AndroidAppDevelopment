@@ -2,7 +2,7 @@
  * Copyright (C) 2014 android10.org. All rights reserved.
  * @author Fernando Cejas (the android10 coder)
  */
-package com.example.presentation.view.fragment;
+package com.example.presentation.page.userdetails.view;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -14,10 +14,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.presentation.R;
-import com.example.presentation.model.UserModel;
-import com.example.presentation.presenter.UserDetailsPresenter;
-import com.example.presentation.view.UserDetailsView;
-import com.example.presentation.view.component.AutoLoadImageView;
+import com.example.presentation.base.view.BaseFragment;
+import com.example.presentation.page.userdetails.presenter.UserDetailsPresenter;
 
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
@@ -87,7 +85,7 @@ public class UserDetailsFragment extends BaseFragment implements UserDetailsView
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        this.userDetailsPresenter.initialize(this, this.userId);
+        initializePresenter();
     }
 
     @Override
@@ -103,8 +101,8 @@ public class UserDetailsFragment extends BaseFragment implements UserDetailsView
     }
 
     @Override
-    void initializePresenter() {
-
+    protected void initializePresenter() {
+        this.userDetailsPresenter.initialize(this, this.userId);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.example.presentation.view.activity;
+package com.example.presentation.base.view;
 
 import android.app.Activity;
 import android.app.Fragment;
