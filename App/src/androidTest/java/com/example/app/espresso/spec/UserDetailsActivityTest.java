@@ -2,14 +2,14 @@
  * Copyright (C) 2014 android10.org. All rights reserved.
  * @author Fernando Cejas (the android10 coder)
  */
-package com.example.app.robolectric.spec;
+package com.example.app.espresso.spec;
 
 import android.app.Fragment;
 import android.content.Intent;
 
+import com.example.app.espresso.support.EspressoSpec;
 import com.example.presentation.R;
 import com.example.presentation.view.activity.UserDetailsActivity;
-import com.example.app.robolectric.support.EspressoSpec;
 import com.google.android.apps.common.testing.ui.espresso.Espresso;
 
 import static com.google.android.apps.common.testing.ui.espresso.Espresso.onView;

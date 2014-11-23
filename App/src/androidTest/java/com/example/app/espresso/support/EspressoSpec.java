@@ -1,4 +1,4 @@
-package com.example.app.robolectric.support;
+package com.example.app.espresso.support;
 
 import android.app.Activity;
 import android.test.ActivityInstrumentationTestCase2;

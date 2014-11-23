@@ -3,7 +3,7 @@ package com.example.app.robolectric.spec;
 import android.content.Intent;
 import android.widget.Button;
 
-import com.example.app.AppRobolectricTestRunner;
+import com.example.app.robolectric.support.AppRobolectricTestRunner;
 import com.example.presentation.view.activity.MainActivity;
 import com.example.presentation.view.activity.UserDetailsActivity;
 import com.example.presentation.view.activity.UserListActivity;

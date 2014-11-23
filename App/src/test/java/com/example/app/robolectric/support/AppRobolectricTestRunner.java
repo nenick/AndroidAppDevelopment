@@ -1,4 +1,4 @@
-package com.example.app;
+package com.example.app.robolectric.support;
 
 
 import com.example.robolectric.support.BaseRobolectricTestRunner;
