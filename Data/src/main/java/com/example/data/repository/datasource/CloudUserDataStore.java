@@ -4,30 +4,23 @@
  */
 package com.example.data.repository.datasource;
 
-import com.example.data.cache.UserCache;
 import com.example.data.entity.UserEntity;
 import com.example.data.network.RestApi;
+import com.example.data.network.RestApiImpl;
+
+import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.EBean;
 
 import java.util.Collection;
 
 /**
  * {@link UserDataStore} implementation based on connections to the api (Cloud).
  */
+@EBean
 public class CloudUserDataStore implements UserDataStore {
 
-    private final RestApi restApi;
-    private final UserCache userCache;
-
-    /**
-     * Construct a {@link UserDataStore} based on connections to the api (Cloud).
-     *
-     * @param restApi   The {@link RestApi} implementation to use.
-     * @param userCache A {@link UserCache} to cache data retrieved from the api.
-     */
-    public CloudUserDataStore(RestApi restApi, UserCache userCache) {
-        this.restApi = restApi;
-        this.userCache = userCache;
-    }
+    @Bean(RestApiImpl.class)
+    protected RestApi restApi;
 
     /**
      * {@inheritDoc}
@@ -62,7 +55,6 @@ public class CloudUserDataStore implements UserDataStore {
             @Override
             public void onUserEntityLoaded(UserEntity userEntity) {
                 userDetailsCallback.onUserEntityLoaded(userEntity);
-                CloudUserDataStore.this.putUserEntityInCache(userEntity);
             }
 
             @Override
@@ -72,14 +64,5 @@ public class CloudUserDataStore implements UserDataStore {
         });
     }
 
-    /**
-     * Saves a {@link UserEntity} into cache.
-     *
-     * @param userEntity The {@link UserEntity} to save.
-     */
-    private void putUserEntityInCache(UserEntity userEntity) {
-        if (userEntity != null) {
-            this.userCache.put(userEntity);
-        }
-    }
+
 }

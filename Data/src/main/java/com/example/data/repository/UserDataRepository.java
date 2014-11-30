@@ -4,11 +4,14 @@
  */
 package com.example.data.repository;
 
+import com.example.data.cache.UserCache;
+import com.example.data.cache.UserCacheImpl;
 import com.example.data.entity.UserEntity;
 import com.example.data.entity.mapper.UserEntityDataMapper;
 import com.example.data.exception.RepositoryErrorBundle;
+import com.example.data.repository.datasource.CloudUserDataStore;
+import com.example.data.repository.datasource.DiskUserDataStore;
 import com.example.data.repository.datasource.UserDataStore;
-import com.example.data.repository.datasource.UserDataStoreFactory;
 import com.example.shared.exception.ErrorBundle;
 import com.example.shared.model.User;
 
@@ -24,9 +27,14 @@ import java.util.Collection;
 public class UserDataRepository implements UserRepository {
 
     @Bean
-    protected UserDataStoreFactory userDataStoreFactory;
-    @Bean
     protected UserEntityDataMapper userEntityDataMapper;
+
+    @Bean(UserCacheImpl.class)
+    protected UserCache userCache;
+    @Bean
+    protected CloudUserDataStore cloudUserDataStore;
+    @Bean
+    protected DiskUserDataStore diskUserDataStore;
 
     /**
      * {@inheritDoc}
@@ -36,8 +44,7 @@ public class UserDataRepository implements UserRepository {
     @Override
     public void getUserList(final UserListCallback userListCallback) {
         //we always get all users from the cloud
-        final UserDataStore userDataStore = this.userDataStoreFactory.createCloudDataStore();
-        userDataStore.getUsersEntityList(new UserDataStore.UserListCallback() {
+        cloudUserDataStore.getUsersEntityList(new UserDataStore.UserListCallback() {
             @Override
             public void onUserListLoaded(Collection<UserEntity> usersCollection) {
                 Collection<User> users =
@@ -56,15 +63,20 @@ public class UserDataRepository implements UserRepository {
      * {@inheritDoc}
      *
      * @param userId       The user id used to retrieve user data.
-     * @param userCallback A {@link com.example.datamodel.repository.UserRepository.UserDetailsCallback}
-     *                     used for notifying clients.
+     * @param userCallback used for notifying clients.
      */
     @Override
     public void getUserById(final int userId, final UserDetailsCallback userCallback) {
-        UserDataStore userDataStore = this.userDataStoreFactory.create(userId);
+        UserDataStore userDataStore;
+        if (!this.userCache.isExpired() && this.userCache.isCached(userId)) {
+            userDataStore = diskUserDataStore;
+        } else {
+            userDataStore = cloudUserDataStore;
+        }
         userDataStore.getUserEntityDetails(userId, new UserDataStore.UserDetailsCallback() {
             @Override
             public void onUserEntityLoaded(UserEntity userEntity) {
+                UserDataRepository.this.putUserEntityInCache(userEntity);
                 User user = UserDataRepository.this.userEntityDataMapper.transform(userEntity);
                 if (user != null) {
                     userCallback.onUserLoaded(user);
@@ -78,5 +90,16 @@ public class UserDataRepository implements UserRepository {
                 userCallback.onError(new RepositoryErrorBundle(ErrorBundle.Error.UnexpectedException, exception));
             }
         });
+    }
+
+    /**
+     * Saves a {@link UserEntity} into cache.
+     *
+     * @param userEntity The {@link UserEntity} to save.
+     */
+    private void putUserEntityInCache(UserEntity userEntity) {
+        if (userEntity != null) {
+            this.userCache.put(userEntity);
+        }
     }
 }

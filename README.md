@@ -38,3 +38,9 @@ More simple project templates can be found at https://github.com/nenick/android-
 # Some notes
 
 The base example is copied from https://github.com/android10/Android-CleanArchitecture I have only combined this with my favourite development tools and test setup.
+
+# contains examples for
+
+* rest communication
+* database handling
+* synchronisation between rest and database

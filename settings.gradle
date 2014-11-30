@@ -1,2 +1,2 @@
-include ':App', ':DataRepository', ':DomainInteractor', ':Shared', 'Data', 'Domain', 'Presentation', 'TestSupportRobolectric'
+include ':App', ':DataRepository', ':DomainInteractor', ':Shared', 'Data', 'DataNetwork', 'DataNetworkJson', 'Domain', 'Presentation', 'TestSupportRobolectric'
 

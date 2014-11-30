@@ -10,9 +10,6 @@
         android:minSdkVersion="11"
         android:targetSdkVersion="21" />
 
-    <!-- remove this permission if no network communication necessary -->
-    <uses-permission android:name="android.permission.INTERNET" />
-
     <application
         tools:replace="android:label"
         android:name=".ExampleApplication"

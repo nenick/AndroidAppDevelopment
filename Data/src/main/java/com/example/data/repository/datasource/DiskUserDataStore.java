@@ -5,50 +5,51 @@
 package com.example.data.repository.datasource;
 
 import com.example.data.cache.UserCache;
+import com.example.data.cache.UserCacheImpl;
 import com.example.data.entity.UserEntity;
+
+import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.EBean;
 
 /**
  * {@link UserDataStore} implementation based on file system data store.
  */
+@EBean
 public class DiskUserDataStore implements UserDataStore {
 
-  private final UserCache userCache;
+    @Bean(UserCacheImpl.class)
+    protected UserCache userCache;
 
-  /**
-   * Construct a {@link UserDataStore} based file system data store.
-   *
-   * @param userCache A {@link UserCache} to cache data retrieved from the api.
-   */
-  public DiskUserDataStore(UserCache userCache) {
-    this.userCache = userCache;
-  }
+    /**
+     * {@inheritDoc}
+     *
+     * @param userListCallback A {@link UserListCallback} used for notifying clients.
+     */
+    @Override
+    public void getUsersEntityList(UserListCallback userListCallback) {
+        //TODO: implement simple cache for storing/retrieving collections of users.
+        throw new UnsupportedOperationException("Operation is not available!!!");
+    }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @param userListCallback A {@link UserListCallback} used for notifying clients.
-   */
-  @Override public void getUsersEntityList(UserListCallback userListCallback) {
-    //TODO: implement simple cache for storing/retrieving collections of users.
-    throw new UnsupportedOperationException("Operation is not available!!!");
-  }
+    /**
+     * {@inheritDoc}
+     *
+     * @param id                  The id to retrieve user data.
+     * @param userDetailsCallback A {@link UserDataStore.UserDetailsCallback} to notify the client.
+     */
+    @Override
+    public void getUserEntityDetails(int id,
+                                     final UserDetailsCallback userDetailsCallback) {
+        this.userCache.get(id, new UserCache.UserCacheCallback() {
+            @Override
+            public void onUserEntityLoaded(UserEntity userEntity) {
+                userDetailsCallback.onUserEntityLoaded(userEntity);
+            }
 
-  /**
-   * {@inheritDoc}
-   *
-   * @param id The id to retrieve user data.
-   * @param userDetailsCallback A {@link UserDataStore.UserDetailsCallback} to notify the client.
-   */
-  @Override public void getUserEntityDetails(int id,
-      final UserDetailsCallback userDetailsCallback) {
-    this.userCache.get(id, new UserCache.UserCacheCallback() {
-      @Override public void onUserEntityLoaded(UserEntity userEntity) {
-        userDetailsCallback.onUserEntityLoaded(userEntity);
-      }
-
-      @Override public void onError(Exception exception) {
-        userDetailsCallback.onError(exception);
-      }
-    });
-  }
+            @Override
+            public void onError(Exception exception) {
+                userDetailsCallback.onError(exception);
+            }
+        });
+    }
 }

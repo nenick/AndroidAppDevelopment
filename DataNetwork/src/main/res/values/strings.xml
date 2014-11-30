@@ -1,0 +1,3 @@
+<resources>
+    <string name="ensureRClassGenerated">Without a resource android annotations miss the R class</string>
+</resources>

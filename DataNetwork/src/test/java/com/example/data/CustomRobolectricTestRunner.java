@@ -1,19 +1,16 @@
-package com.example.robolectric.support;
+package com.example.data;
 
 
 import org.androidannotations.api.BackgroundExecutor;
 import org.junit.runners.model.InitializationError;
 import org.robolectric.AndroidManifest;
-import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.SdkConfig;
-import org.robolectric.SdkEnvironment;
 import org.robolectric.annotation.Config;
 import org.robolectric.bytecode.ClassInfo;
 import org.robolectric.bytecode.Setup;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Properties;
 
 /**
@@ -30,68 +27,10 @@ import java.util.Properties;
  * <p/>
  * -
  */
-public abstract class BaseRobolectricTestRunner extends RobolectricTestRunner {
+public class CustomRobolectricTestRunner extends RobolectricTestRunner {
 
-    /**
-     * Register which classes may be shadowed.
-     * <p/>
-     * Example implementation:
-     * <p/>
-     * <pre>
-     * protected Class[] getClassesToShadow() {
-     *     return new Class[0];
-     *     return new Class[] {ClassToShadow.class};
-     * }
-     * </pre>
-     *
-     * @return empty collection or classes to shadow.
-     */
-    protected abstract Class[] getClassesToShadow();
-
-    /**
-     * Register default shadow classes.
-     * <p/>
-     * Example implementation:
-     * <p/>
-     * <pre>
-     * protected Class[] getDefaultShadowClasses() {
-     *     return new Class[0];
-     *     return new Class[] {ShadowClass.class};
-     * }
-     * </pre>
-     *
-     * @return empty collection or shadow classes.
-     */
-    protected abstract Class[] getDefaultShadowClasses();
-
-    private ArrayList<String> classesToShadow = new ArrayList<String>();
-    private String defaultShadowClasses = CustomShadowApplication.class.getName()
-            + " " + ShadowBackgroundExecutor.class.getName();
-
-    public BaseRobolectricTestRunner(Class<?> testClass) throws InitializationError {
+    public CustomRobolectricTestRunner(Class<?> testClass) throws InitializationError {
         super(testClass);
-
-        for (Class aClass : getClassesToShadow()) {
-            classesToShadow.add(aClass.getName());
-        }
-
-        for (Class aClass : getDefaultShadowClasses()) {
-            defaultShadowClasses += " " + aClass.getName();
-        }
-
-        // default exception handler for background threads don't report exceptions to test thread
-        // but a test should fail if a background job failed with an exception
-        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
-            @Override
-            public void uncaughtException(Thread thread, final Throwable ex) {
-                Robolectric.getBackgroundScheduler().post(new Runnable() {
-                    @Override
-                    public void run() {
-                        throw new RuntimeException(ex);
-                    }
-                });
-            }
-        });
     }
 
     @Override
@@ -125,12 +64,13 @@ public abstract class BaseRobolectricTestRunner extends RobolectricTestRunner {
         return super.getAppManifest(new Config.Implementation(config, Config.Implementation.fromProperties(properties)));
     }
 
-    @Override
+    /*@Override
     protected void configureShadows(SdkEnvironment sdkEnvironment, Config config) {
         Properties properties = new Properties();
-        properties.setProperty("shadows", defaultShadowClasses);
+        properties.setProperty("shadows", CustomShadowApplication.class.getName()
+                + " " + ShadowBackgroundExecutor.class.getName());
         super.configureShadows(sdkEnvironment, new Config.Implementation(config, Config.Implementation.fromProperties(properties)));
-    }
+    }*/
 
     class ExtraShadows extends Setup {
         private Setup setup;
@@ -140,9 +80,8 @@ public abstract class BaseRobolectricTestRunner extends RobolectricTestRunner {
         }
 
         public boolean shouldInstrument(ClassInfo classInfo) {
-            boolean shouldInstrument = setup.shouldInstrument(classInfo);
-            return shouldInstrument
-                    || classesToShadow.contains(classInfo.getName())
+            boolean shoudInstrument = setup.shouldInstrument(classInfo);
+            return shoudInstrument
                     || classInfo.getName().equals(BackgroundExecutor.class.getName());
         }
     }

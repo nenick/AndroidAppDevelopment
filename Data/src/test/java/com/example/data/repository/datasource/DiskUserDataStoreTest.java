@@ -14,6 +14,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -27,6 +28,7 @@ public class DiskUserDataStoreTest extends ApplicationTestCase {
 
     private static final int FAKE_USER_ID = 11;
 
+    @InjectMocks
     private DiskUserDataStore diskUserDataStore;
 
     @Mock
@@ -42,7 +44,6 @@ public class DiskUserDataStoreTest extends ApplicationTestCase {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        diskUserDataStore = new DiskUserDataStore(mockUserCache);
     }
 
     @Test

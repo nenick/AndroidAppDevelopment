@@ -5,11 +5,13 @@
 package com.example.data.repository;
 
 import com.example.data.ApplicationTestCase;
+import com.example.data.cache.UserCache;
 import com.example.data.entity.UserEntity;
 import com.example.data.entity.mapper.UserEntityDataMapper;
 import com.example.data.exception.RepositoryErrorBundle;
+import com.example.data.repository.datasource.CloudUserDataStore;
+import com.example.data.repository.datasource.DiskUserDataStore;
 import com.example.data.repository.datasource.UserDataStore;
-import com.example.data.repository.datasource.UserDataStoreFactory;
 import com.example.shared.model.User;
 
 import org.junit.Before;
@@ -38,11 +40,14 @@ public class UserDataRepositoryTest extends ApplicationTestCase {
     private UserDataRepository userDataRepository;
 
     @Mock
-    private UserDataStoreFactory mockUserDataStoreFactory;
+    UserCache mockUserCache;
     @Mock
     private UserEntityDataMapper mockUserEntityDataMapper;
     @Mock
-    private UserDataStore mockUserDataStore;
+    CloudUserDataStore cloudUserDataStore;
+    @Mock
+    DiskUserDataStore diskUserDataStore;
+
     @Mock
     private UserEntity mockUserEntity;
     @Mock
@@ -58,9 +63,6 @@ public class UserDataRepositoryTest extends ApplicationTestCase {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-
-        given(mockUserDataStoreFactory.create(anyInt())).willReturn(mockUserDataStore);
-        given(mockUserDataStoreFactory.createCloudDataStore()).willReturn(mockUserDataStore);
     }
 
     @Test
@@ -72,7 +74,7 @@ public class UserDataRepositoryTest extends ApplicationTestCase {
                         mockUserEntity);
                 return null;
             }
-        }).when(mockUserDataStore).getUserEntityDetails(anyInt(),
+        }).when(cloudUserDataStore).getUserEntityDetails(anyInt(),
                 any(UserDataStore.UserDetailsCallback.class));
         given(mockUserEntityDataMapper.transform(mockUserEntity)).willReturn(mockUser);
 
@@ -80,6 +82,7 @@ public class UserDataRepositoryTest extends ApplicationTestCase {
 
         verify(mockUserEntityDataMapper).transform(mockUserEntity);
         verify(mockUserDetailsRepositoryCallback).onUserLoaded(mockUser);
+        verify(mockUserCache).put(mockUserEntity);
     }
 
     @Test
@@ -91,7 +94,7 @@ public class UserDataRepositoryTest extends ApplicationTestCase {
                         mockUserEntity);
                 return null;
             }
-        }).when(mockUserDataStore).getUserEntityDetails(anyInt(),
+        }).when(cloudUserDataStore).getUserEntityDetails(anyInt(),
                 any(UserDataStore.UserDetailsCallback.class));
         given(mockUserEntityDataMapper.transform(mockUserEntity)).willReturn(null);
 
@@ -112,7 +115,7 @@ public class UserDataRepositoryTest extends ApplicationTestCase {
                         any(Exception.class));
                 return null;
             }
-        }).when(mockUserDataStore).getUserEntityDetails(anyInt(),
+        }).when(cloudUserDataStore).getUserEntityDetails(anyInt(),
                 any(UserDataStore.UserDetailsCallback.class));
 
         userDataRepository.getUserById(FAKE_USER_ID, mockUserDetailsRepositoryCallback);

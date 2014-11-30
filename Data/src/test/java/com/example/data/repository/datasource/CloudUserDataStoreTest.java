@@ -13,6 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -28,6 +29,7 @@ public class CloudUserDataStoreTest extends ApplicationTestCase {
 
     private static final int FAKE_USER_ID = 765;
 
+    @InjectMocks
     private CloudUserDataStore cloudUserDataStore;
 
     @Mock
@@ -46,7 +48,6 @@ public class CloudUserDataStoreTest extends ApplicationTestCase {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        cloudUserDataStore = new CloudUserDataStore(mockRestApi, mockUserCache);
     }
 
     @Test
@@ -62,7 +63,6 @@ public class CloudUserDataStoreTest extends ApplicationTestCase {
         restApiUserDetailsCallbackArgumentCaptor.getValue().onUserEntityLoaded(mockUserEntity);
 
         verify(mockUserDetailsDataStoreCallback).onUserEntityLoaded(mockUserEntity);
-        verify(mockUserCache).put(mockUserEntity);
     }
 
     @Test
