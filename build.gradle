@@ -130,18 +130,18 @@ task jacocoReport(type: JacocoReport) {
     // fix issue with double $$ at generate report task
     doFirst {
         new File('App/build/intermediates/classes/').eachFileRecurse { file ->
-            if (file.name.contains('$$ModuleAdapter')) {
-                file.renameTo(file.path.replace('$$ModuleAdapter', '$'))
+            if (file.name.contains('$$')) {
+                file.renameTo(file.path.replace('$$', '$'))
             }
         }
         new File('Domain/build/intermediates/classes/').eachFileRecurse { file ->
-            if (file.name.contains('$$ModuleAdapter')) {
-                file.renameTo(file.path.replace('$$ModuleAdapter', '$'))
+            if (file.name.contains('$$')) {
+                file.renameTo(file.path.replace('$$', '$'))
             }
         }
         new File('Presentation/build/intermediates/classes/').eachFileRecurse { file ->
-            if (file.name.contains('$$ModuleAdapter')) {
-                file.renameTo(file.path.replace('$$ModuleAdapter', '$'))
+            if (file.name.contains('$$')) {
+                file.renameTo(file.path.replace('$$', '$'))
             }
         }
     }
