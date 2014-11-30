@@ -133,6 +133,10 @@ dependencies {
 def coverageSourceDirs = [
         '../App/src/main/java',
 '../Data/src/main/java',
+'../Data/build/source/apt/debug',
+'../DataNetwork/build/source/apt/debug',
+'../DataNetwork/src/main/java',
+'../DataNetworkJson/gen',
 '../DataRepository/src/main/java',
 '../Domain/src/main/java',
 '../DomainInteractor/src/main/java',
