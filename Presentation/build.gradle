@@ -22,6 +22,9 @@ apply from: '../Scripts/androidannotations.gradle'
 android {
     compileSdkVersion 21
     buildToolsVersion '21.1.1'
+    defaultConfig {
+        minSdkVersion 14
+    }
 }
 
 // add robolectric support after android {} configurations
