@@ -1,16 +1,13 @@
 language: android
 jdk: oraclejdk7
 
-env:
-- TERM=dumb
-
-env:
-  matrix:
-    - ANDROID_TARGET=android-21  ANDROID_ABI=armeabi-v7a
-
 android:
   components:
+    - platform-tools
+    - tools
     - build-tools-21.1.1
+    - android-21
+    - sys-img-armeabi-v7a-android-21
 
 before_script:
 
@@ -19,20 +16,14 @@ before_script:
   - sudo service mysql stop
   - sudo service memcached stop
 
-  # Workaround to provide necessary updated android tools
-  # TODO should be not more necessary
-  - echo yes | android update sdk --no-ui --all --filter platform-tools,tools
-  - echo yes | android update sdk --no-ui --all --filter build-tools-21.1.1
-  - echo yes | android update sdk --no-ui --all --filter android-21
-
   # Create and start emulator
-  - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
-  - emulator -avd test -no-audio -no-window &
-  - adb wait-for-device
+  - echo no | android create avd --force -n test -t android-21 --abi armeabi-v7a
+  - emulator -avd test -no-skin -no-audio -no-window &
+  - android-wait-for-emulator
   - adb shell input keyevent 82 &
 
 install:
-  # Prevent `gradle assemble` from being invoked by overriding with no-op
+  # Prevent default tasks from being invoked by overriding with no-op
   - true
 
 script:
