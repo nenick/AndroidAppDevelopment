@@ -1,9 +1,9 @@
 apply plugin: 'java'
 
+// workaround for missing provided feature
 configurations {
     provided
 }
-
 sourceSets {
     main {
         compileClasspath += configurations.provided
@@ -11,10 +11,12 @@ sourceSets {
 }
 
 dependencies {
+    // dagger support
     provided 'com.squareup.dagger:dagger-compiler:1.2.2'
     compile 'com.squareup.dagger:dagger:1.2.2'
     compile 'javax.annotation:jsr250-api:1.0'
 
+    // framework and tools for testing
     testCompile 'junit:junit:4.11'
     testCompile 'org.mockito:mockito-core:1.9.5'
 }

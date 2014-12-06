@@ -1,3 +1,0 @@
-apply plugin: 'com.github.kt3k.coveralls'
-
-apply from: '../Scripts/jacoco-support.gradle'

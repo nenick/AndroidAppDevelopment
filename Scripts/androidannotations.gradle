@@ -1,11 +1,6 @@
-/*
-include the buildscript dependency and apply this gradle script with: apply from: 'path/name.gradle'
+apply from: '../Scripts/android-apt.gradle'
 
-buildscript {
-    dependencies {
-        classpath "com.neenbedankt.gradle.plugins:android-apt:1.2"
-    }
+dependencies {
+    apt 'org.androidannotations:androidannotations:3.0.1'
+    compile 'org.androidannotations:androidannotations-api:3.0.1'
 }
-*/
-
-

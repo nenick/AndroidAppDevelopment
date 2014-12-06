@@ -29,7 +29,7 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
     "phone",
     "website"
 })
-public class User {
+public class UserJson {
 
     @JsonProperty("id")
     private int id;

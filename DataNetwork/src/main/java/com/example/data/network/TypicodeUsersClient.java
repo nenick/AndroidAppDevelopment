@@ -1,6 +1,6 @@
 package com.example.data.network;
 
-import com.example.data.network.json.User;
+import com.example.data.network.json.UserJson;
 
 import org.androidannotations.annotations.rest.Get;
 import org.androidannotations.annotations.rest.Rest;
@@ -10,11 +10,11 @@ import org.springframework.http.converter.json.MappingJacksonHttpMessageConverte
 
 @Rest(rootUrl = "http://jsonplaceholder.typicode.com",
         converters = {MappingJacksonHttpMessageConverter.class, StringHttpMessageConverter.class})
-public interface TypicodeUsers {
+interface TypicodeUsersClient {
 
     @Get("/users")
-    ResponseEntity<User[]> getUsers();
+    ResponseEntity<UserJson[]> getUsers();
 
     @Get("/users/{userId}")
-    ResponseEntity<User> getUser(int userId);
+    ResponseEntity<UserJson> getUser(int userId);
 }

@@ -4,6 +4,6 @@ dependencies {
     compile project(":Shared")
 }
 
-// just clean up dashboard from not generated reports
+// clean up dashboard from not generated reports
 test.reports.html.enabled = false
 test.reports.junitXml.enabled = false

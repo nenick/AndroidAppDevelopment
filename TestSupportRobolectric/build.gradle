@@ -3,9 +3,12 @@ apply plugin: 'java'
 dependencies {
     compile 'junit:junit:4.11'
     compile 'org.mockito:mockito-core:1.9.5'
-    compile('com.squareup:fest-android:1.0.+') { exclude module: 'support-v4' }
+    compile('com.squareup:fest-android:1.0.8') { exclude module: 'support-v4' }
     compile ('org.robolectric:robolectric:2.4') {
+        // avoid not necessary dependencies, list example from https://github.com/robolectric/deckard-gradle
         exclude module: 'classworlds'
+        exclude module: 'commons-logging'
+        exclude module: 'httpclient'
         exclude module: 'maven-artifact'
         exclude module: 'maven-artifact-manager'
         exclude module: 'maven-error-diagnostics'
@@ -18,11 +21,12 @@ dependencies {
         exclude module: 'plexus-container-default'
         exclude module: 'plexus-interpolation'
         exclude module: 'plexus-utils'
-        exclude module: 'support-v4' // crazy but my android studio don't like this dependency and to fix it remove .idea and re import project
         exclude module: 'wagon-file'
         exclude module: 'wagon-http-lightweight'
         exclude module: 'wagon-http-shared'
         exclude module: 'wagon-provider-api'
     }
-    compile("org.androidannotations:androidannotations-api:" + androidAnnotationsAPIVersion)
+
+    // For shadowing BackgroundExecutor, perhaps replace it with shadow mechanism for unknown classes
+    compile 'org.androidannotations:androidannotations-api:3.0.1'
 }

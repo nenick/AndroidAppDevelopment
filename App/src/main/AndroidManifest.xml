@@ -7,11 +7,6 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <uses-sdk
-        tools:node="replace"
-        android:minSdkVersion="11"
-        android:targetSdkVersion="21" />
-
     <application
         tools:replace="android:label"
         android:name=".ExampleApplication"

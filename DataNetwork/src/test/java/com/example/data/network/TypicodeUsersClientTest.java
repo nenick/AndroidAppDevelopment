@@ -1,29 +1,29 @@
 package com.example.data.network;
 
 import com.example.data.ApplicationTestCase;
-import com.example.data.network.json.User;
+import com.example.data.network.json.UserJson;
 
 import org.junit.Test;
 import org.springframework.http.ResponseEntity;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 
-public class TypicodeUsersTest extends ApplicationTestCase {
+public class TypicodeUsersClientTest extends ApplicationTestCase {
 
-    TypicodeUsers client = new TypicodeUsers_();
+    TypicodeUsersClient client = new TypicodeUsersClient_();
 
     @Test
     public void testGetUsers() throws Exception {
-        ResponseEntity<User[]> users = client.getUsers();
-        User[] body = users.getBody();
+        ResponseEntity<UserJson[]> users = client.getUsers();
+        UserJson[] body = users.getBody();
         assertThat(body).isNotNull();
         assertThat(body).hasSize(10);
     }
 
     @Test
     public void testGetUser() throws Exception {
-        ResponseEntity<User> user = client.getUser(1);
-        User body = user.getBody();
+        ResponseEntity<UserJson> user = client.getUser(1);
+        UserJson body = user.getBody();
         assertThat(body).isNotNull();
         assertThat(body.getName()).isEqualTo("Leanne Graham");
     }

@@ -7,7 +7,7 @@ buildscript {
     }
 }
 */
-apply plugin: 'android-apt'
+apply from: '../Scripts/android-apt.gradle'
 
 dependencies {
     apt 'com.squareup.dagger:dagger-compiler:1.2.2'

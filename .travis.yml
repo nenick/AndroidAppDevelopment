@@ -6,18 +6,18 @@ env:
 
 env:
   matrix:
-    - ANDROID_TARGET=android-19  ANDROID_ABI=armeabi-v7a
+    - ANDROID_TARGET=android-21  ANDROID_ABI=armeabi-v7a
 
 android:
   components:
-    - build-tools-20.0.0
+    - build-tools-21.1.1
 
 before_script:
 
   # Workaround to provide necessary updated android tools
   - echo yes | android update sdk --no-ui --all --filter platform-tools,tools
-  - echo yes | android update sdk --no-ui --all --filter build-tools-20.0.0
-  - echo yes | android update sdk --no-ui --all --filter android-20
+  - echo yes | android update sdk --no-ui --all --filter build-tools-21.1.1
+  - echo yes | android update sdk --no-ui --all --filter android-21
 
   # Create and start emulator
   - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI

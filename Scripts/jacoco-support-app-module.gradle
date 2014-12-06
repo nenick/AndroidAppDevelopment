@@ -1,0 +1,90 @@
+configurations {
+    jacoco2 {
+        description "JARs required for doing our own JacocoReport tasks"
+    }
+}
+
+dependencies {
+    jacoco2 'org.jacoco:org.jacoco.ant:0.7.2.201409121644'
+}
+
+def coverageSourceDirs = [
+        '../App/src/main/java',
+        '../Data/src/main/java',
+        '../Data/build/source/apt/debug',
+        '../DataNetwork/build/source/apt/debug',
+        '../DataNetwork/src/main/java',
+        '../DataNetworkJson/gen',
+        '../DataRepository/src/main/java',
+        '../Domain/src/main/java',
+        '../DomainInteractor/src/main/java',
+        '../Presentation/src/main/java']
+
+task jacocoReport(type: JacocoReport) {
+    classDirectories  = fileTree(dir: '../App/build/intermediates/classes/debug', exclude: 'com/example/**/R*.class')
+    classDirectories += fileTree(dir: '../Data/build/intermediates/classes/debug', exclude: 'com/example/R*.class')
+    classDirectories += fileTree(dir: '../DataRepository/build/intermediates/classes/debug', exclude: 'com/example/R*.class')
+    classDirectories += fileTree(dir: '../Domain/build/intermediates/classes/debug', exclude: 'com/example/R*.class')
+    classDirectories += fileTree(dir: '../DomainInteractor/build/intermediates/classes/debug', exclude: 'com/example/R*.class')
+    classDirectories += fileTree(dir: '../Presentation/build/intermediates/classes/debug', exclude: 'com/example/R*.class')
+    jacocoClasspath = configurations.jacoco2
+    // Add execution data from all subprojects
+    executionData fileTree(project.projectDir).include("build/jacoco/*.exec")
+    // Add source classes from all subprojects
+
+
+    sourceDirectories = files(coverageSourceDirs)
+
+    // Make the aggregate report go in a top-level directory somewhere
+    reports {
+        html {
+            enabled true
+            destination "build/reports/jacoco/test"
+        }
+        xml {
+            enabled true
+            destination "build/reports/jacoco/test/jacocoTestReport.xml"
+        }
+    }
+
+    doFirst {
+        new File('App/build/intermediates/classes/').eachFileRecurse { file ->
+            if (file.name.contains('$$')) {
+                file.renameTo(file.path.replace('$$', '$'))
+            }
+        }
+        new File('Domain/build/intermediates/classes/').eachFileRecurse { file ->
+            if (file.name.contains('$$')) {
+                file.renameTo(file.path.replace('$$', '$'))
+            }
+        }
+        new File('Presentation/build/intermediates/classes/').eachFileRecurse { file ->
+            if (file.name.contains('$$')) {
+                file.renameTo(file.path.replace('$$', '$'))
+            }
+        }
+    }
+    doLast {
+        new File('App/build/intermediates/classes/').eachFileRecurse { file ->
+            if (file.name.contains('$ModuleAdapter')) {
+                file.renameTo(file.path.replace('$ModuleAdapter', '$$ModuleAdapter'))
+            }
+        }
+        new File('Domain/build/intermediates/classes/').eachFileRecurse { file ->
+            if (file.name.contains('$ModuleAdapter')) {
+                file.renameTo(file.path.replace('$ModuleAdapter', '$$ModuleAdapter'))
+            }
+        }
+        new File('Presentation/build/intermediates/classes/').eachFileRecurse { file ->
+            if (file.name.contains('$ModuleAdapter')) {
+                file.renameTo(file.path.replace('$ModuleAdapter', '$$ModuleAdapter'))
+            }
+        }
+    }
+}
+
+//apply plugin: 'com.github.kt3k.coveralls'
+
+//coveralls {
+//    project.extensions.coveralls.sourceDirs += coverageSourceDirs
+//}

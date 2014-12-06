@@ -5,44 +5,37 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:0.12.+"
+        // TODO necessary but why?
+        classpath 'com.android.tools.build:gradle:1.0.0-rc4'
+        // include coveralls plugin for coverage reports
         classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:1.0.2'
     }
 }
 
+// some defaults for all sub projects
 configure(allprojects) { project ->
     buildscript {
         repositories {
             jcenter()
-            maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
         }
     }
 }
 
-project.ext.preDexLibs = !project.hasProperty('disablePreDex')
-ext.robolectricDependsOnNeeded = true;
-
+// some defaults for all sub projects
 subprojects {
-    group = 'com.example'
-
-    ext.androidToolsBuildGradle     = '0.12.+'
-    ext.androidBuildToolsVersion    = '20.0.0';
-    ext.androidMinSdkVersion        = 10;
-    ext.androidCompileSdkVersion    = 19;
-    ext.androidTargetSdkVersion     = 20;
-
-    ext.androidAnnotationsVersion = '3.0.1';
-    ext.androidAnnotationsAPIVersion = '3.0.1';
-
     repositories {
-        mavenCentral()
-        maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+        // common dependency repository
+        jcenter()
         maven { url "file://${System.getenv("ANDROID_HOME")}/extras/android/m2repository" }
         mavenLocal()
     }
+}
 
-    // Improve build server performance by allowing disabling of pre-dexing
-    // (see http://tools.android.com/tech-docs/new-build-system/tips#TOC-Improving-Build-Server-performance.)
+// Improve build server performance by allowing disabling of pre-dexing
+// (see http://tools.android.com/tech-docs/new-build-system/tips#TOC-Improving-Build-Server-performance.)
+project.ext.preDexLibs = !project.hasProperty('disablePreDex')
+ext.robolectricDependsOnNeeded = true;
+subprojects {
     project.plugins.whenPluginAdded { plugin ->
         if ("com.android.build.gradle.AppPlugin".equals(plugin.class.name)) {
             project.android.dexOptions.preDexLibraries = rootProject.ext.preDexLibs
@@ -52,122 +45,20 @@ subprojects {
     }
 }
 
-apply plugin: 'java' // ensure clean is also triggered for root build folder
+// ensure clean is also triggered for root build folder
+apply plugin: 'java'
 apply plugin: 'build-dashboard'
 
 buildDashboard {
     reports.html.destination = "build/"
 }
 
-test.reports.html.enabled = false     // just clean up dashboard from not generated reports
-test.reports.junitXml.enabled = false // just clean up dashboard from not generated reports
+// clean up dashboard from not generated reports
+test.reports.html.enabled = false
+test.reports.junitXml.enabled = false
 
-// Android Studio Support - avoid missing task error at compiling test classes befor test execution
+// Android Studio Support - avoid missing task error at compiling test classes before test execution
 task testCompile {}
 
-subprojects {
-    apply plugin: "jacoco"
-    test {
-        // Don't instrument and generate code coverage unless "-Pcodecoverage" is set on the command line
-        jacoco {
-            enabled = project.hasProperty("codecoverage")
-        }
-    }
-}
-repositories {
-    mavenCentral()
-}
-configurations {
-    jacoco {
-        description "JARs required for doing our own JacocoReport tasks"
-    }
-}
-dependencies {
-    jacoco 'org.jacoco:org.jacoco.ant:0.7.2.201409121644'
-}
-
-def coverageSourceDirs = [
-//        'App/src/main/java',
-        'Data/src/main/java',
-        'DataNetwork/src/main/java',
-        'DataNetwork/build/source/apt/debug',
-        'DataNetworkJson/gen',
-        'DataRepository/src/main/java',
-        'Domain/src/main/java',
-        'DomainInteractor/src/main/java',
-        'Presentation/src/main/java']
-
-task jacocoReport(type: JacocoReport) {
-    //classDirectories  = fileTree(dir: 'App/build/intermediates/classes/debug', exclude: 'com/example/**/R.class')
-    classDirectories = fileTree(dir: 'DataNetworkJson/build/classes/debug')
-    classDirectories += fileTree(dir: 'DataNetwork/build/intermediates/classes/debug').matching { exclude '**/R.class', '**/R\$*.class', '**/*InjectAdapter.class', '**/BuildConfig.class' }
-    classDirectories += fileTree(dir: 'Data/build/intermediates/classes/debug').matching { exclude '**/*_.class', '**/R.class', '**/R\$*.class', '**/*InjectAdapter.class', '**/BuildConfig.class' }
-    classDirectories += fileTree(dir: 'DataRepository/build/intermediates/classes/debug').matching { exclude '**/*_.class', '**/R.class', '**/R\$*.class', '**/*InjectAdapter.class', '**/BuildConfig.class'  }
-    classDirectories += fileTree(dir: 'Domain/build/intermediates/classes/debug').matching { exclude '**/*_.class', '**/R.class', '**/R\$*.class', '**/*InjectAdapter.class', '**/BuildConfig.class'  }
-    classDirectories += fileTree(dir: 'DomainInteractor/build/intermediates/classes/debug').matching { exclude '**/*_.class', '**/R.class', '**/R\$*.class', '**/*InjectAdapter.class', '**/BuildConfig.class'  }
-    classDirectories += fileTree(dir: 'Presentation/build/intermediates/classes/debug').matching { exclude '**/*_.class', '**/R.class', '**/R\$*.class', '**/*InjectAdapter.class', '**/BuildConfig.class'  }
-    jacocoClasspath = configurations.jacoco
-    // Add execution data from all subprojects
-    executionData fileTree(project.rootDir.absolutePath).include("*/build/jacoco/*.exec").exclude("App/build/jacoco/*.exec")
-    // Add source classes from all subprojects
-    subprojects.each {
-        sourceSets it.sourceSets.main
-    }
-
-    additionalSourceDirs = files(coverageSourceDirs)
-
-    // Make the aggregate report go in a top-level directory somewhere
-    reports {
-        html {
-            enabled true
-            destination "build/reports/jacoco/test"
-        }
-        xml {
-            enabled true
-            destination "build/reports/jacoco/test/jacocoTestReport.xml"
-        }
-    }
-
-    // fix issue with double $$ at generate report task
-    doFirst {
-        new File('App/build/intermediates/classes/').eachFileRecurse { file ->
-            if (file.name.contains('$$')) {
-                file.renameTo(file.path.replace('$$', '$'))
-            }
-        }
-        new File('Domain/build/intermediates/classes/').eachFileRecurse { file ->
-            if (file.name.contains('$$')) {
-                file.renameTo(file.path.replace('$$', '$'))
-            }
-        }
-        new File('Presentation/build/intermediates/classes/').eachFileRecurse { file ->
-            if (file.name.contains('$$')) {
-                file.renameTo(file.path.replace('$$', '$'))
-            }
-        }
-    }
-    // avoid some side effects through revert renaming
-    doLast {
-        new File('App/build/intermediates/classes/').eachFileRecurse { file ->
-            if (file.name.contains('$ModuleAdapter')) {
-                file.renameTo(file.path.replace('$ModuleAdapter', '$$ModuleAdapter'))
-            }
-        }
-        new File('Domain/build/intermediates/classes/').eachFileRecurse { file ->
-            if (file.name.contains('$ModuleAdapter')) {
-                file.renameTo(file.path.replace('$ModuleAdapter', '$$ModuleAdapter'))
-            }
-        }
-        new File('Presentation/build/intermediates/classes/').eachFileRecurse { file ->
-            if (file.name.contains('$ModuleAdapter')) {
-                file.renameTo(file.path.replace('$ModuleAdapter', '$$ModuleAdapter'))
-            }
-        }
-    }
-}
-
-apply plugin: 'com.github.kt3k.coveralls'
-
-coveralls {
-    project.extensions.coveralls.sourceDirs += coverageSourceDirs
-}
+// code coverage for all unit tests
+apply from: 'Scripts/jacoco-coveralls-support.gradle'
