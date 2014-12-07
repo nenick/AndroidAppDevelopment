@@ -2,28 +2,33 @@ language: android
 jdk: oraclejdk7
 
 env:
+- TERM=dumb
+
+env:
   matrix:
-  # TARGET=21 results constantly in com.android.ddmlib.ShellCommandUnresponsiveException
     - ANDROID_TARGET=android-19  ANDROID_ABI=armeabi-v7a
 
 android:
   components:
+    - build-tools-21.1.1
     - platform-tools
     - tools
-    - build-tools-21.1.1
-    - ${ANDROID_TARGET}
-    - sys-img-${ANDROID_ABI}-${ANDROID_TARGET}
 
 before_script:
 
+  # Workaround to provide necessary updated android tools
+  #- echo yes | android update sdk --no-ui --all --filter platform-tools,tools
+  #- echo yes | android update sdk --no-ui --all --filter build-tools-20.0.0
+  #- echo yes | android update sdk --no-ui --all --filter android-20
+
   # Create and start emulator
-  - echo no | android create avd --force -n test -t ${ANDROID_TARGET} --abi ${ANDROID_ABI}
-  - emulator -avd test -no-skin -no-audio -no-window &
-  - android-wait-for-emulator
+  - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
+  - emulator -avd test -no-audio -no-window &
+  - adb wait-for-device
   - adb shell input keyevent 82 &
 
 install:
-  # Prevent default tasks from being invoked by overriding with no-op
+  # Prevent `gradle assemble` from being invoked by overriding with no-op
   - true
 
 script:
