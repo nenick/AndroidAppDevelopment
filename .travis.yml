@@ -3,7 +3,8 @@ jdk: oraclejdk7
 
 env:
   matrix:
-    - ANDROID_TARGET=android-21  ANDROID_ABI=armeabi-v7a
+  # TARGET=21 results constantly in com.android.ddmlib.ShellCommandUnresponsiveException
+    - ANDROID_TARGET=android-19  ANDROID_ABI=armeabi-v7a
 
 android:
   components:
