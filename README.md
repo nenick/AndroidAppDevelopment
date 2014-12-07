@@ -12,9 +12,9 @@ More simple project templates can be found at https://github.com/nenick/android-
 
 ## Last tests done with
 
-* Android Studio 0.8.14
-* Gradle Build Tools 0.12.+
-* Gradle 1.12
+* Android Studio rc4
+* Gradle Build Tools 1.0.0-rc4
+* Gradle 2.2.1
 
 ## Features done
 
