@@ -3,7 +3,7 @@
 buildscript {
     dependencies {
         // include gradle android plugin
-        classpath 'com.android.tools.build:gradle:1.0.0-rc4'
+        classpath 'com.android.tools.build:gradle:1.0.0'
         // support for code generation tools (eg. dagger, android annotations)
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
         // support for robolectric tests

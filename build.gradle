@@ -6,7 +6,7 @@ buildscript {
     }
     dependencies {
         // TODO necessary but why?
-        classpath 'com.android.tools.build:gradle:1.0.0-rc4'
+        classpath 'com.android.tools.build:gradle:1.0.0'
         // include coveralls plugin for coverage reports
         classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:1.0.2'
     }
