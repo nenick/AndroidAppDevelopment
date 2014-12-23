@@ -2,11 +2,11 @@
 
 **Short**: Contains json model classes for rest communication.
 
-**Long**:
-
-The model classes are generated from a schema. So you must only specify important things
+**Long**: The model classes are generated from a schema. So you must only specify important things
 like json mapping tool, models with properties and all the boilerplate stuff will be
 written for you.
+
+This is a saperated package because the generation tool conflicts with gradle android plugin.
 
 The files will be automatic generated if you trigger a build.
 
