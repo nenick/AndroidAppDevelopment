@@ -7,7 +7,7 @@ buildscript {
         // support for code generation tools (eg. dagger, android annotations)
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
         // support for robolectric tests
-        classpath 'com.github.jcandksolutions.gradle:android-unit-test:2.0.2'
+        classpath 'com.github.jcandksolutions.gradle:android-unit-test:2.1.1'
     }
 }
 

@@ -15,6 +15,8 @@ application. Also it contains some last level (acceptance) tests with robolectri
 * **src/main**
     * **AndroidManifest.xml** <br>
       App-Name, App-Icon, App-Permissions
+    * **project.properties** <br>
+      This file kust avoid a null pointer from robolectric.
     * **test-project.properties** <br>
       Contains paths to exploded AAR dependencies for robolectric. (Original it comes from
       eclipse project setup, but now it's only for robolectric support)
