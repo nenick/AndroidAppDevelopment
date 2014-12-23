@@ -8,7 +8,7 @@ application.
 
 * **proguard-project.txt** <br>
   Custom proguard rules. Perhaps all rules may moved to sub modules, where the rules belong to.
-* logging.properties <br>
+* **logging.properties** <br>
   Experimental: should be the single point for logging configurations.
 
 * **src/main**
