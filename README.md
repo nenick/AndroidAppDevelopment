@@ -6,6 +6,9 @@ with Android Studio, Gradle, Espresso, Robolectric, AndroidAnnotations, JaCoCo
 
 ***Wishes, improvements and discussions about the stuff here are welcome***
 
+See sub modules README.MD for more details
+* [App](https://github.com/nenick/AndroidAppDevelopment/tree/master/App)
+
 [see also wiki for more help](https://github.com/nenick/AndroidAppDevelopment/wiki)
 
 More simple project templates can be found at https://github.com/nenick/android-gradle-template
