@@ -8,6 +8,8 @@ with Android Studio, Gradle, Espresso, Robolectric, AndroidAnnotations, JaCoCo
 
 See sub modules README.MD for more details
 * [App](https://github.com/nenick/AndroidAppDevelopment/tree/master/App)
+* [Data Network](https://github.com/nenick/AndroidAppDevelopment/tree/master/DataNetwork)
+* [Data Network Json](https://github.com/nenick/AndroidAppDevelopment/tree/master/DataNetworkJson)
 
 [see also wiki for more help](https://github.com/nenick/AndroidAppDevelopment/wiki)
 
