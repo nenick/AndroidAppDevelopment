@@ -15,35 +15,37 @@ More simple project templates can be found at https://github.com/nenick/android-
 
 ## Last tests done with
 
-* Android Studio rc4
-* Gradle Build Tools 1.0.0-rc4
+* Android Studio 1.0.2
+* Android Studio Unit Test Plugin 1.4.0
+* Gradle Build Tools 1.0.0
 * Gradle 2.2.1
 
 ## Features done
 
-* Gradle + AndroidStudio as development Enironment
+* Gradle + Android Studio as development Enironment
 * Robolectric for unit tests
     * Mockito
     * Code coverage with JaCoCo
-    * Code coverage with Teamcity
-* Robolectric for component tests
+* Robolectric for acceptance tests
     * Code coverage with JaCoCo
-    * Code coverage with Teamcity
 * FEST Android assertions
 * Espresso for acceptance tests
-* [AndroidAnnotations](http://androidannotations.org/) generate dependency injection
+* [AndroidAnnotations](http://androidannotations.org/) generated dependency injection, less code, etc ...
+* [Dagger](http://square.github.io/dagger/) dependency injection for runtime dependencies
 * [RoboCoP](https://github.com/mediarain/RoboCoP) generate database management
-* Shortcut: jump between test and implementation with default short cut
+* Native intellij unit test support: jump to tests, refactor test classes too, etc ...
 * [Travis](https://travis-ci.org/) CI runs all test variants
 * [Coveralls](https://coveralls.io/) shows unit test code coverage [coveralls-gradle-plugin](https://github.com/kt3k/coveralls-gradle-plugin)
-* Clean Architecture based on this create example [https://github.com/android10/Android-CleanArchitecture]
+* Clean Architecture based on this example [https://github.com/android10/Android-CleanArchitecture]
 
 # Some notes
 
 The base example is copied from https://github.com/android10/Android-CleanArchitecture I have only combined this with my favourite development tools and test setup.
 
-# contains examples for
+# What does this project show
 
-* rest communication
-* database handling
-* synchronisation between rest and database
+* Rest Communication <br>
+    * How to use and test REST communication with AndroidAnnotations
+    * (not yet ready)
+* Database Handling
+* how to separate the
