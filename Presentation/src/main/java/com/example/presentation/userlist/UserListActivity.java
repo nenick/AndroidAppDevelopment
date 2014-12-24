@@ -22,7 +22,7 @@ public class UserListActivity extends BaseActivity implements UserListFragment.U
 
 
     public static Intent getCallingIntent(Context context) {
-        return new Intent(context, UserListActivity.class);
+        return new Intent(context, UserListActivity_.class);
     }
 
     @Override
