@@ -10,6 +10,7 @@ import android.content.Intent;
 import com.example.app.espresso.support.EspressoSpec;
 import com.example.presentation.R;
 import com.example.presentation.userlist.UserListActivity;
+import com.example.presentation.userlist.UserListActivity_;
 import com.google.android.apps.common.testing.ui.espresso.Espresso;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -45,6 +46,6 @@ public class UserListActivityTest extends EspressoSpec {
     }
 
     private Intent createTargetIntent() {
-        return UserListActivity.getCallingIntent(getInstrumentation().getTargetContext());
+        return UserListActivity_.getCallingIntent(getInstrumentation().getTargetContext());
     }
 }
