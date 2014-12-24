@@ -108,7 +108,7 @@ public class UserListActivityTest extends PresentationSpec {
 
     @Test
     public void shouldStartUserDetails_WhenUserIsSelected() {
-        givenStartedViewWithUsers();
+        givenStartedViewWithTwoUsers();
         whenSelectUserOnListPosition(0);
         thenUserDetailsIsStarted(userListResult.get(0).getUserId());
         whenSelectUserOnListPosition(1);
@@ -119,6 +119,16 @@ public class UserListActivityTest extends PresentationSpec {
     public void shouldShowEmptyList_WhenGetUserListReturnEmpty() {
         givenStartedView();
         givenEmptyUserListAsResult();
+        whenGetUserListReturn(userListResult);
+        thenUserListHasCount(userListResult.size());
+    }
+
+    @Test
+    public void shouldUpdateList_WhenUserListRefresh() {
+        givenStartedViewWithTwoUsers();
+        whenClickRefreshButton();
+        givenTwoUsersAsResult();
+        userListResult.add(new User(3));
         whenGetUserListReturn(userListResult);
         thenUserListHasCount(userListResult.size());
     }
@@ -147,7 +157,7 @@ public class UserListActivityTest extends PresentationSpec {
     }
 
 
-    private void givenStartedViewWithUsers() {
+    private void givenStartedViewWithTwoUsers() {
         givenStartedView();
         givenTwoUsersAsResult();
         whenGetUserListReturn(userListResult);
@@ -156,13 +166,13 @@ public class UserListActivityTest extends PresentationSpec {
 
     private void whenGetUserListsFinishedSuccessful() {
         Robolectric.runBackgroundTasks();
-        givenStartedViewWithUsers();
+        givenStartedViewWithTwoUsers();
         whenGetUserListReturn(userListResult);
     }
 
     private void whenGetUserListsFinishedFailed() {
         Robolectric.runBackgroundTasks();
-        givenStartedViewWithUsers();
+        givenStartedViewWithTwoUsers();
         verify(domainModuleMock.getUserListUseCase).execute(callbackArgumentCaptor.capture());
         callbackArgumentCaptor.getValue().onError(new ErrorBundle() {
             @Override
