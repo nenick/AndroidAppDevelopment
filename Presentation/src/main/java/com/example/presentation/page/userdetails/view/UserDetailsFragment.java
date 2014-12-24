@@ -48,16 +48,6 @@ public class UserDetailsFragment extends BaseFragment implements UserDetailsView
         super();
     }
 
-    public static UserDetailsFragment newInstance(int userId) {
-        UserDetailsFragment userDetailsFragment = new UserDetailsFragment();
-
-        Bundle argumentsBundle = new Bundle();
-        argumentsBundle.putInt(ARGUMENT_KEY_USER_ID, userId);
-        userDetailsFragment.setArguments(argumentsBundle);
-
-        return userDetailsFragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,18 +76,6 @@ public class UserDetailsFragment extends BaseFragment implements UserDetailsView
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initializePresenter();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        this.userDetailsPresenter.resume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        this.userDetailsPresenter.pause();
     }
 
     @Override

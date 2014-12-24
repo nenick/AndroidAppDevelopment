@@ -48,14 +48,6 @@ public class UserDetailsPresenter implements Presenter {
         DaggerSupport.inject(this);
     }
 
-    @Override
-    public void resume() {
-    }
-
-    @Override
-    public void pause() {
-    }
-
     /**
      * Initializes the presenter by start retrieving user details.
      */

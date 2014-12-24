@@ -85,18 +85,6 @@ public class UserListFragment extends Fragment implements UserListView {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        this.userListPresenter.resume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        this.userListPresenter.pause();
-    }
-
-    @Override
     public void showLoading() {
         this.rl_progress.setVisibility(View.VISIBLE);
         this.getActivity().setProgressBarIndeterminateVisibility(true);

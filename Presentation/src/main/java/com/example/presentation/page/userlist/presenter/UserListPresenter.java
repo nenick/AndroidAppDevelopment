@@ -51,18 +51,6 @@ public class UserListPresenter implements Presenter {
         DaggerSupport.inject(this);
     }
 
-    @Override
-    public void resume() {
-    }
-
-    @Override
-    public void pause() {
-    }
-
-    /**
-     * Initializes the presenter by start retrieving the user list.
-     * @param userListFragment
-     */
     public void initialize(UserListView userListFragment) {
         userListCallback.register(this);
         viewListView = userListFragment;
