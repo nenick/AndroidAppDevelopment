@@ -43,6 +43,7 @@ public class UserListActivityTest extends PresentationSpec {
         givenStartedViewWithPendingTasks();
         thenGetUserListStartedAtBackground();
         thenProgressBarIsVisible();
+        thenRetryOptionIsGone();
     }
 
     @Test
@@ -52,38 +53,49 @@ public class UserListActivityTest extends PresentationSpec {
         whenClickRefreshButton();
         thenGetUserListStartedAtBackground();
         thenProgressBarIsVisible();
+        thenRetryOptionIsGone();
     }
 
     @Test
-    public void shouldStopProgressBarAtInitial_WhenGetUserListSuccess() {
+    public void shouldShowRefreshFinishedAtInitial_WhenGetUserListSuccess() {
         givenStartedViewWithPendingTasks();
+        thenProgressBarIsVisible();
+        thenRetryOptionIsGone();
+        whenGetUserListsFinishedSuccessful();
+        thenProgressBarIsGone();
+        thenRetryOptionIsGone();
+    }
+
+    @Test
+    public void shouldShowRefreshFinishedAtRefresh_WhenGetUserListSuccess() {
+        givenStartedView();
+        whenClickRefreshButton();
+        thenRetryOptionIsGone();
         thenProgressBarIsVisible();
         whenGetUserListsFinishedSuccessful();
         thenProgressBarIsGone();
+        thenRetryOptionIsGone();
     }
 
     @Test
-    public void shouldStopProgressBarAtRefresh_WhenGetUserListSuccess() {
-        givenStartedView();
-        whenClickRefreshButton();
-        thenProgressBarIsVisible();
-        whenGetUserListsFinishedSuccessful();
-        thenProgressBarIsGone();
-    }
-
-    @Test
-    public void shouldStopProgressBarAtInitial_WhenGetUserListFailed() {
+    public void shouldShowRefreshFinishedAtInitial_WhenGetUserListFailed() {
         givenStartedViewWithPendingTasks();
+        thenProgressBarIsVisible();
+        thenRetryOptionIsGone();
         whenGetUserListsFinishedFailed();
         thenProgressBarIsGone();
+        thenRetryOptionIsVisible();
     }
 
     @Test
-    public void shouldStopProgressBarAtRefresh_WhenGetUserListFailed() {
+    public void shouldShowRefreshFinishedAtRefresh_WhenGetUserListFailed() {
         givenStartedView();
+        thenProgressBarIsVisible();
+        thenRetryOptionIsGone();
         whenClickRefreshButton();
         whenGetUserListsFinishedFailed();
         thenProgressBarIsGone();
+        thenRetryOptionIsVisible();
     }
 
     @Test
@@ -214,6 +226,14 @@ public class UserListActivityTest extends PresentationSpec {
     private void thenProgressBarIsGone() {
         ANDROID.assertThat(Robolectric.shadowOf(userListActivity.getWindow()).getIndeterminateProgressBar().getRootView()).isVisible();
         ANDROID.assertThat(userListActivity.findViewById(R.id.rl_progress)).isGone();
+    }
+
+    private void thenRetryOptionIsGone() {
+        ANDROID.assertThat(userListActivity.findViewById(R.id.rl_retry)).isGone();
+    }
+
+    private void thenRetryOptionIsVisible() {
+        ANDROID.assertThat(userListActivity.findViewById(R.id.rl_retry)).isVisible();
     }
 
     private void initialiseListItems() {
