@@ -7,6 +7,7 @@ import com.example.app.robolectric.support.AppRobolectricTestRunner;
 import com.example.presentation.page.start.MainActivity;
 import com.example.presentation.page.userdetails.view.UserDetailsActivity;
 import com.example.presentation.userlist.UserListActivity;
+import com.example.presentation.userlist.UserListActivity_;
 import com.example.robolectric.support.RobolectricTasks;
 
 import junit.framework.TestCase;
@@ -34,7 +35,7 @@ public class RobolectricIntegrationTest {
 
         Intent nextStartedActivity = Robolectric.shadowOf(mainActivity).getNextStartedActivity();
         TestCase.assertTrue(nextStartedActivity != null);
-        TestCase.assertEquals(nextStartedActivity.getComponent().getClassName(), UserListActivity.class.getName());
+        TestCase.assertEquals(nextStartedActivity.getComponent().getClassName(), UserListActivity_.class.getName());
     }
 
     @Test
