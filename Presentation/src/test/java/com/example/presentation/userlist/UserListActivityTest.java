@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 
 public class UserListActivityTest extends PresentationSpec {
@@ -94,6 +95,7 @@ public class UserListActivityTest extends PresentationSpec {
     private void givenStartedView() {
         givenStartedViewWithPendingTasks();
         Robolectric.runBackgroundTasks();
+        reset(domainModuleMock.getUserListUseCase);
     }
 
 

@@ -13,6 +13,7 @@ import com.example.shared.dagger.DaggerSupport;
 import com.example.shared.exception.ErrorBundle;
 import com.example.shared.model.User;
 
+import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
@@ -42,6 +43,11 @@ public class UserDetailsPresenter implements Presenter {
     @Bean
     protected UserModelDataMapper userModelDataMapper;
 
+    @AfterInject
+    protected void afterInject() {
+        DaggerSupport.inject(this);
+    }
+
     @Override
     public void resume() {
     }
@@ -54,7 +60,6 @@ public class UserDetailsPresenter implements Presenter {
      * Initializes the presenter by start retrieving user details.
      */
     public void initialize(UserDetailsView viewDetailsView, int userId) {
-        DaggerSupport.inject(this);
         userDetailsCallback.register(this);
         this.viewDetailsView = viewDetailsView;
         this.userId = userId;

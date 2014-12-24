@@ -14,6 +14,7 @@ import com.example.shared.exception.ErrorBundle;
 import com.example.shared.model.User;
 
 
+import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
@@ -45,6 +46,11 @@ public class UserListPresenter implements Presenter {
         this.viewListView = viewListView;
     }
 
+    @AfterInject
+    protected void afterInject() {
+        DaggerSupport.inject(this);
+    }
+
     @Override
     public void resume() {
     }
@@ -58,7 +64,6 @@ public class UserListPresenter implements Presenter {
      * @param userListFragment
      */
     public void initialize(UserListView userListFragment) {
-        DaggerSupport.inject(this);
         userListCallback.register(this);
         viewListView = userListFragment;
         this.loadUserList();

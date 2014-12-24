@@ -2,7 +2,9 @@ package com.example.presentation;
 
 import com.example.domain.interactor.GetUserDetailsUseCase;
 import com.example.domain.interactor.GetUserListUseCase;
+import com.example.presentation.page.userdetails.presenter.UserDetailsPresenter;
 import com.example.presentation.page.userdetails.presenter.UserDetailsPresenter_;
+import com.example.presentation.page.userlist.presenter.UserListPresenter;
 import com.example.presentation.page.userlist.presenter.UserListPresenter_;
 
 import dagger.Module;
@@ -11,7 +13,7 @@ import dagger.Provides;
 import static org.mockito.Mockito.mock;
 
 @Module(
-        injects = {UserDetailsPresenter_.class, UserListPresenter_.class},
+        injects = {UserDetailsPresenter.class, UserDetailsPresenter_.class, UserListPresenter.class, UserListPresenter_.class},
         complete = false
 )
 public class DomainModuleMock {
