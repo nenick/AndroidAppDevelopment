@@ -3,7 +3,7 @@ apply plugin: 'java'
 dependencies {
     compile 'junit:junit:4.11'
     compile 'org.mockito:mockito-core:1.9.5'
-    compile('com.squareup:fest-android:1.0.8') { exclude module: 'support-v4' }
+    compile('com.squareup:fest-android:1.0.8')
     compile ('org.robolectric:robolectric:2.4') {
         // avoid not necessary dependencies, list example from https://github.com/robolectric/deckard-gradle
         exclude module: 'classworlds'

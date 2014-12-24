@@ -17,7 +17,7 @@ import com.example.presentation.base.view.BaseActivity;
  */
 public class UserDetailsActivity extends BaseActivity {
 
-  private static final String INTENT_EXTRA_PARAM_USER_ID = "org.android10.INTENT_PARAM_USER_ID";
+  public static final String INTENT_EXTRA_PARAM_USER_ID = "org.android10.INTENT_PARAM_USER_ID";
   private static final String INSTANCE_STATE_PARAM_USER_ID = "org.android10.STATE_PARAM_USER_ID";
 
   private int userId;

@@ -4,6 +4,9 @@ package com.example.presentation;
 import com.example.robolectric.support.BaseRobolectricTestRunner;
 
 import org.junit.runners.model.InitializationError;
+import org.robolectric.annotation.Config;
+
+import java.lang.reflect.Method;
 
 /**
  * Robolectric Support
@@ -33,5 +36,11 @@ public class PresentationRobolectricTestRunner extends BaseRobolectricTestRunner
 
     public PresentationRobolectricTestRunner(Class<?> testClass) throws InitializationError {
         super(testClass);
+    }
+
+    @Override
+    public Config getConfig(Method method) {
+        Config config = super.getConfig(method);
+        return overwriteConfig(config, "application", TestDummyApplication.class.getName());
     }
 }

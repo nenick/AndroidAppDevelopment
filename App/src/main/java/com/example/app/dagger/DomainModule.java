@@ -1,23 +1,28 @@
 package com.example.app.dagger;
 
-import android.content.Context;
-
-import com.example.data.repository.UserDataRepository_;
-import com.example.data.repository.UserRepository;
+import com.example.domain.interactor.GetUserDetailsUseCase;
 import com.example.domain.interactor.GetUserDetailsUseCaseImpl;
+import com.example.domain.interactor.GetUserListUseCase;
 import com.example.domain.interactor.GetUserListUseCaseImpl;
+import com.example.presentation.page.userdetails.presenter.UserDetailsPresenter_;
+import com.example.presentation.page.userlist.presenter.UserListPresenter_;
 
 import dagger.Module;
 import dagger.Provides;
 
 @Module(
-        injects = {GetUserListUseCaseImpl.class, GetUserDetailsUseCaseImpl.class},
+        injects = {UserDetailsPresenter_.class, UserListPresenter_.class},
         complete = false
 )
 public class DomainModule {
 
     @Provides
-    public UserRepository provideUserRepository(@ForApplication Context context) {
-        return UserDataRepository_.getInstance_(context);
+    public GetUserDetailsUseCase provideGetUserDetailsUseCase() {
+        return new GetUserDetailsUseCaseImpl();
+    }
+
+    @Provides
+    public GetUserListUseCase provideGetUserListUseCase() {
+        return new GetUserListUseCaseImpl();
     }
 }

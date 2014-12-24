@@ -4,7 +4,6 @@ package com.example.robolectric.support;
 import org.androidannotations.api.BackgroundExecutor;
 import org.junit.runners.model.InitializationError;
 import org.robolectric.AndroidManifest;
-import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.SdkConfig;
 import org.robolectric.SdkEnvironment;
@@ -64,7 +63,7 @@ public abstract class BaseRobolectricTestRunner extends RobolectricTestRunner {
      */
     protected abstract Class[] getDefaultShadowClasses();
 
-    private ArrayList<String> classesToShadow = new ArrayList<String>();
+    private ArrayList<String> classesToShadow = new ArrayList<>();
     private String defaultShadowClasses = CustomShadowApplication.class.getName()
             + " " + ShadowBackgroundExecutor.class.getName();
 
@@ -79,17 +78,15 @@ public abstract class BaseRobolectricTestRunner extends RobolectricTestRunner {
             defaultShadowClasses += " " + aClass.getName();
         }
 
-        // default exception handler for background threads don't report exceptions to test thread
-        // but a test should fail if a background job failed with an exception
+        // default exception handler for background threads don't report full stack traces
+        // following code throws the exception with correct cause stack trace.
         Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
             @Override
             public void uncaughtException(Thread thread, final Throwable ex) {
-                Robolectric.getBackgroundScheduler().post(new Runnable() {
-                    @Override
-                    public void run() {
-                        throw new RuntimeException(ex);
-                    }
-                });
+                RuntimeException runtimeException;
+                runtimeException = new RuntimeException("Uncaught background task exception");
+                runtimeException.initCause(ex);
+                throw runtimeException;
             }
         });
     }
@@ -101,14 +98,16 @@ public abstract class BaseRobolectricTestRunner extends RobolectricTestRunner {
 
     @Override
     protected SdkConfig pickSdkVersion(AndroidManifest appManifest, Config config) {
-        Properties properties = new Properties();
-
         // current robolectric supports not the latest android sdk version
         // so we must downgrade to simulate the latest supported version.
-        properties.setProperty("emulateSdk", "18");
-
-        Config.Implementation implementation = new Config.Implementation(config, Config.Implementation.fromProperties(properties));
+        Config.Implementation implementation = overwriteConfig(config, "emulateSdk", "18");
         return super.pickSdkVersion(appManifest, implementation);
+    }
+
+    protected Config.Implementation overwriteConfig(Config config, String key, String value) {
+        Properties properties = new Properties();
+        properties.setProperty(key, value);
+        return new Config.Implementation(config, Config.Implementation.fromProperties(properties));
     }
 
     protected AndroidManifest getAppManifest(Config config) {

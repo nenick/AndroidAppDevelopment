@@ -19,12 +19,12 @@
         </activity>
 
         <activity
-            android:name=".page.userlist.view.UserListActivity"
-            android:label="@string/activity_title_user_list"></activity>
+            android:name=".userlist.UserListActivity_"
+            android:label="@string/activity_title_user_list"/>
 
         <activity
             android:name=".page.userdetails.view.UserDetailsActivity"
-            android:label="@string/activity_title_user_details"></activity>
+            android:label="@string/activity_title_user_details"/>
     </application>
 
 </manifest>

@@ -13,6 +13,36 @@
 * **src/test** <br>
     Testing the presentation with robolectric support.
 
+## Cursor vs DTO
+
+In android is it common to use a cursor (data implementation detail) inside view classes. There
+are tools which try to force the usage of cursors like CursorAdapter and CursorLoader. But we could
+also take alternative adapter and tools like async tasks to get the same result. Cursors are hard
+to mock, its much easier to prepare bunch of DTOs instead a collection at a cursor.
+
+The academic clean way is not to use data implementation details at presentation layer but the
+cursor could also be handled as a DTO, because it transport data and the only exception it may have
+notification registration for data changes.
+
+*Current I trying the DTO way. The notification registration for data changes will be the hardest
+one to archive with custom DTO techniques. We will see how far i come or when to use cursors again.*
+
+## Architecture
+
+### Activity
+Responsible for page navigation. This one decide whether to start another activity or update
+other fragments at multi pane views. Current activities have no presenter, because they never have
+a need to interact with the model, only fragments should have it. Activities only combine fragments
+and transport some intent data to the fragments.
+
+### Fragment
+Each view is designed as fragment. Gives you the best possibilities to implement multi pane views
+or reuse views. Implements how things are displayed.
+
+### Presenter
+Each Fragment have his own presenter. Receives view events, which should interact with the model
+and say the view what it should do but not how to do.
+
 ## Testing
 
 The value for writing tests on this module is to proof the UI behavior.

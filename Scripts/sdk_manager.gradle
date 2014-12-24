@@ -1,0 +1,118 @@
+
+// Original comes from https://raw.githubusercontent.com/cookpad/gradle-android-sdk-manager/master/sdk_manager.gradle
+// To avoid build depends on active internet connection the script was copied into project.
+
+ext.guessSdkDir = {
+    def sdkDir = readLocalPropertiesValue("sdk.dir")
+    if (sdkDir) {
+        return sdkDir
+    }
+
+    [
+            "/Applications/Android Studio.app/sdk",
+            "/usr/local/opt/android-sdk", // brew --prefix android-sdk
+            System.getenv("ANDROID_SDK"),
+            System.getenv("ANDROID_HOME"),
+    ].each { dir ->
+        if (dir != null && file(dir).exists()) {
+            sdkDir = dir
+        }
+    }
+    return sdkDir
+}
+
+ext.guessNdkDir = {
+    def ndkDir = readLocalPropertiesValue("ndk.dir")
+    if (ndkDir) {
+        return ndkDir
+    }
+
+    [
+            "/usr/local/opt/android-ndk", // brew --prefix android-ndk
+            System.getenv("ANDROID_NDK"),
+    ].each { dir ->
+        if (dir != null && file(dir).exists()) {
+            ndkDir = dir
+        }
+    }
+    return ndkDir
+}
+
+ext.readLocalPropertiesValue = { key ->
+    if (!project.file("local.properties").exists()) {
+        return ""
+    }
+
+    Properties properties = new Properties()
+    properties.load(project.file("local.properties").newDataInputStream())
+    return properties.getProperty(key)
+}
+
+ext.installRequiredSdk = { appExtension, sdkDir=readLocalPropertiesValue("sdk.dir") ->
+    def compileSdkVersion = appExtension.compileSdkVersion
+    def buildToolsRevision = appExtension.buildToolsRevision
+
+    if (compileSdkVersion == null || buildToolsRevision == null) {
+        throw new IllegalArgumentException("compileSdkVersion and buildToolsRevision must not be null")
+    }
+
+    if (!(sdkDir)) {
+        throw new GradleException("sdkDir does not exist")
+    }
+
+    def workers = []
+    def String sdkToolsAndroidExecFilePath = findSdkToolsAndroidExecFile(sdkDir)
+    buildComponents(sdkDir, compileSdkVersion, buildToolsRevision).each { component ->
+        workers.add(Thread.start{ runInstall(sdkToolsAndroidExecFilePath, component) })
+    }
+    workers*.join()
+}
+
+private def buildComponents(sdkDir, compileSdkVersion, buildToolsRevision) {
+    def components = []
+
+    def platformDir = "${sdkDir}/platforms/${compileSdkVersion}"
+    if (!file(platformDir).exists()) {
+        components.add("${compileSdkVersion}")
+        println "[platform] ${platformDir} is not installed"
+    }
+    def buildToolDir = "${sdkDir}/build-tools/${buildToolsRevision}"
+    if (!file(buildToolDir).exists()) {
+        components.add("build-tools-${buildToolsRevision}")
+        println "[build tools] ${buildToolDir} is not installed"
+    }
+
+    return components
+}
+
+private def runInstall(String sdkToolsAndroidExecFilePath, component) {
+    def leftProc = "echo y".execute()
+    def rightProc = [
+            sdkToolsAndroidExecFilePath,
+            "update",
+            "sdk",
+            "--no-ui",
+            "-a",
+            "--filter",
+            "${component}"].execute()
+
+    pipe(leftProc, rightProc)
+}
+
+private def pipe(leftProc, rightProc) {
+    leftProc | rightProc
+    rightProc.in.eachLine { line -> println line }
+    rightProc.waitFor()
+}
+
+private String findSdkToolsAndroidExecFile(String sdkDir) {
+    // "android" for Linux and OS X, "android.bat" for Windows
+    def fileNameCandidates = ["android", "android.bat"]
+    for (def fileName : fileNameCandidates) {
+        def candidateFilePath = "${sdkDir}/tools/${fileName}"
+        if (file(candidateFilePath).exists()) {
+            return candidateFilePath
+        }
+    }
+    throw new RuntimeException("Executable file `android` not found")
+}

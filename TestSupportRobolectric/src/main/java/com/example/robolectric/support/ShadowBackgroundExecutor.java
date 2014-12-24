@@ -5,6 +5,7 @@ import org.androidannotations.api.BackgroundExecutor;
 import org.robolectric.Robolectric;
 import org.robolectric.annotation.Implementation;
 import org.robolectric.annotation.Implements;
+import org.robolectric.shadows.ShadowAsyncTask;
 
 /**
  * Ensure synchronous execution of android annotations background tasks.
@@ -17,6 +18,8 @@ public class ShadowBackgroundExecutor {
 
     @Implementation
     public static synchronized void execute(final BackgroundExecutor.Task task) {
+        new ShadowAsyncTask<Void, Void, Void>();
+
         Robolectric.getBackgroundScheduler().post(task);
     }
 }

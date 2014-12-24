@@ -5,6 +5,7 @@
 package com.example.presentation.page.userlist.view;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,11 +15,10 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.example.presentation.R;
-import com.example.presentation.base.view.BaseFragment;
 import com.example.presentation.page.userlist.presenter.UserListPresenter;
-
 
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
@@ -29,7 +29,7 @@ import java.util.Collection;
  * Fragment that shows a list of Users.
  */
 @EFragment
-public class UserListFragment extends BaseFragment implements UserListView {
+public class UserListFragment extends Fragment implements UserListView {
 
     /**
      * Interface for listening user list events.
@@ -81,7 +81,7 @@ public class UserListFragment extends BaseFragment implements UserListView {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        initializePresenter();
+        this.userListPresenter.initialize(this);
     }
 
     @Override
@@ -94,11 +94,6 @@ public class UserListFragment extends BaseFragment implements UserListView {
     public void onPause() {
         super.onPause();
         this.userListPresenter.pause();
-    }
-
-    @Override
-    protected void initializePresenter() {
-        this.userListPresenter.initialize(this);
     }
 
     @Override
@@ -144,7 +139,7 @@ public class UserListFragment extends BaseFragment implements UserListView {
 
     @Override
     public void showError(String message) {
-        this.showToastMessage(message);
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
 
     @Override

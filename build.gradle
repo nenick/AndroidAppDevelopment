@@ -21,14 +21,33 @@ configure(allprojects) { project ->
     }
 }
 
+apply from: "Scripts/sdk_manager.gradle"
+
 // some defaults for all sub projects
 subprojects {
     repositories {
         // common dependency repository
         jcenter()
-        maven { url "file://${System.getenv("ANDROID_HOME")}/extras/android/m2repository" }
+        def sdkDir = guessSdkDir()
+        maven { url "file://${sdkDir}/extras/android/m2repository" }
+        mavenCentral()
         mavenLocal()
     }
+}
+ext.obtainSdkDir = {
+    sdkDir = ${System.getenv("ANDROID_HOME")}
+    if(sdkDir == null) sdkDir = readLocalPropertiesValue("sdk.dir")
+    sdkDir
+}
+
+ext.readLocalPropertiesValue = { key ->
+    if (!project.file("local.properties").exists()) {
+        return ""
+    }
+
+    Properties properties = new Properties()
+    properties.load(project.file("local.properties").newDataInputStream())
+    return properties.getProperty(key)
 }
 
 // Improve build server performance by allowing disabling of pre-dexing

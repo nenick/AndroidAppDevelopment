@@ -37,4 +37,6 @@ dependencies {
 
     // framework and tools for testing android related code inside jvm
     testCompile project(":TestSupportRobolectric")
+
+    testCompile 'com.squareup.dagger:dagger-compiler:1.2.2'
 }
