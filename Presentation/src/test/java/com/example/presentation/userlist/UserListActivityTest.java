@@ -45,6 +45,7 @@ public class UserListActivityTest extends PresentationSpec {
     @Test
     public void shouldRefreshUserListAtBackground_WhenButtonClick() {
         givenStartedView();
+        reset(domainModuleMock.getUserListUseCase);
         whenClickRefreshButton();
         thenGetUserListStartedAtBackground();
     }
@@ -95,7 +96,6 @@ public class UserListActivityTest extends PresentationSpec {
     private void givenStartedView() {
         givenStartedViewWithPendingTasks();
         Robolectric.runBackgroundTasks();
-        reset(domainModuleMock.getUserListUseCase);
     }
 
 
