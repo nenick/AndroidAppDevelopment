@@ -10,6 +10,7 @@ import com.example.presentation.PresentationSpec;
 import com.example.presentation.R;
 import com.example.presentation.page.userdetails.view.UserDetailsActivity;
 import com.example.presentation.page.userlist.presenter.GetUserListUseCaseCallback_;
+import com.example.shared.exception.ErrorBundle;
 import com.example.shared.model.User;
 
 import org.fest.assertions.api.ANDROID;
@@ -30,6 +31,7 @@ public class UserListActivityTest extends PresentationSpec {
 
     UserListActivity userListActivity;
     ArrayList<User> userListResult;
+    ArgumentCaptor<GetUserListUseCaseCallback_> callbackArgumentCaptor = ArgumentCaptor.forClass(GetUserListUseCaseCallback_.class);
 
     @Before
     public void setUp() {
@@ -37,17 +39,51 @@ public class UserListActivityTest extends PresentationSpec {
     }
 
     @Test
-    public void shouldInitialGetUserListAtBackground() {
+    public void shouldInitialGetUserListAtBackgroundWithProgressBar() {
         givenStartedViewWithPendingTasks();
         thenGetUserListStartedAtBackground();
+        thenProgressBarIsVisible();
     }
 
     @Test
-    public void shouldRefreshUserListAtBackground_WhenButtonClick() {
+    public void shouldRefreshUserListAtBackgroundWithProgressBar_WhenButtonClick() {
         givenStartedView();
         reset(domainModuleMock.getUserListUseCase);
         whenClickRefreshButton();
         thenGetUserListStartedAtBackground();
+        thenProgressBarIsVisible();
+    }
+
+    @Test
+    public void shouldStopProgressBarAtInitial_WhenGetUserListSuccess() {
+        givenStartedViewWithPendingTasks();
+        thenProgressBarIsVisible();
+        whenGetUserListsFinishedSuccessful();
+        thenProgressBarIsGone();
+    }
+
+    @Test
+    public void shouldStopProgressBarAtRefresh_WhenGetUserListSuccess() {
+        givenStartedView();
+        whenClickRefreshButton();
+        thenProgressBarIsVisible();
+        whenGetUserListsFinishedSuccessful();
+        thenProgressBarIsGone();
+    }
+
+    @Test
+    public void shouldStopProgressBarAtInitial_WhenGetUserListFailed() {
+        givenStartedViewWithPendingTasks();
+        whenGetUserListsFinishedFailed();
+        thenProgressBarIsGone();
+    }
+
+    @Test
+    public void shouldStopProgressBarAtRefresh_WhenGetUserListFailed() {
+        givenStartedView();
+        whenClickRefreshButton();
+        whenGetUserListsFinishedFailed();
+        thenProgressBarIsGone();
     }
 
     @Test
@@ -106,13 +142,40 @@ public class UserListActivityTest extends PresentationSpec {
         initialiseListItems();
     }
 
+    private void whenGetUserListsFinishedSuccessful() {
+        Robolectric.runBackgroundTasks();
+        givenStartedViewWithUsers();
+        whenGetUserListReturn(userListResult);
+    }
+
+    private void whenGetUserListsFinishedFailed() {
+        Robolectric.runBackgroundTasks();
+        givenStartedViewWithUsers();
+        verify(domainModuleMock.getUserListUseCase).execute(callbackArgumentCaptor.capture());
+        callbackArgumentCaptor.getValue().onError(new ErrorBundle() {
+            @Override
+            public Exception getException() {
+                return new NullPointerException();
+            }
+
+            @Override
+            public Error getError() {
+                return Error.UnexpectedException;
+            }
+
+            @Override
+            public String getErrorMessage() {
+                return "Dummy general error";
+            }
+        });
+    }
+
     private void whenSelectUserOnListPosition(int position) {
         ListView userList = (ListView) userListActivity.findViewById(R.id.lv_users);
         assertThat(userList.performItemClick(userList, position, userList.getAdapter().getItemId(position))).isTrue();
     }
 
     private void whenGetUserListReturn(ArrayList<User> users) {
-        ArgumentCaptor<GetUserListUseCaseCallback_> callbackArgumentCaptor = ArgumentCaptor.forClass(GetUserListUseCaseCallback_.class);
         verify(domainModuleMock.getUserListUseCase).execute(callbackArgumentCaptor.capture());
         callbackArgumentCaptor.getValue().onUserListLoaded(users);
     }
@@ -141,6 +204,16 @@ public class UserListActivityTest extends PresentationSpec {
         ANDROID.assertThat(nextStartedActivity).hasComponent(userListActivity, UserDetailsActivity.class);
         ANDROID.assertThat(nextStartedActivity).hasExtra(UserDetailsActivity.INTENT_EXTRA_PARAM_USER_ID);
         assertThat(nextStartedActivity.getIntExtra(UserDetailsActivity.INTENT_EXTRA_PARAM_USER_ID, -1)).isEqualTo(userId);
+    }
+
+    private void thenProgressBarIsVisible() {
+        assertThat(Robolectric.shadowOf(userListActivity.getWindow()).getIndeterminateProgressBar().isIndeterminate()).isTrue();
+        ANDROID.assertThat(userListActivity.findViewById(R.id.rl_progress)).isVisible();
+    }
+
+    private void thenProgressBarIsGone() {
+        ANDROID.assertThat(Robolectric.shadowOf(userListActivity.getWindow()).getIndeterminateProgressBar().getRootView()).isVisible();
+        ANDROID.assertThat(userListActivity.findViewById(R.id.rl_progress)).isGone();
     }
 
     private void initialiseListItems() {
