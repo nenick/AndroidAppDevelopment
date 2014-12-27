@@ -9,7 +9,7 @@ import com.example.shared.exception.ErrorBundle;
 import java.util.Collection;
 
 /**
- * This interface represents a execution unit for a use case to get a collection of {@link com.example.domain.model.User}.
+ * This interface represents a execution unit for a use case to get a collection of Users.
  * By convention this use case implementation will return the result using a Callback.
  */
 public interface GetUserListUseCase {
@@ -18,8 +18,8 @@ public interface GetUserListUseCase {
    * happened.
    */
   interface Callback {
-    void onUserListLoaded(Collection<User> usersCollection);
-    void onError(ErrorBundle errorBundle);
+    void success(Collection<User> usersCollection);
+    void failed(ErrorBundle errorBundle);
   }
 
   /**

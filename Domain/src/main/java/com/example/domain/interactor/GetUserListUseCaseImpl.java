@@ -50,10 +50,10 @@ public class GetUserListUseCaseImpl implements GetUserListUseCase {
             };
 
     private void notifyGetUserListSuccessfully(final Collection<User> usersCollection) {
-        callback.onUserListLoaded(usersCollection);
+        callback.success(usersCollection);
     }
 
     private void notifyError(final ErrorBundle errorBundle) {
-        callback.onError(errorBundle);
+        callback.failed(errorBundle);
     }
 }

@@ -47,35 +47,34 @@ task jacocoReport(type: JacocoReport) {
         }
     }
 
+    // fix issue with double $$ at generate report task
     doFirst {
-        new File('App/build/intermediates/classes/').eachFileRecurse { file ->
-            if (file.name.contains('$$')) {
-                file.renameTo(file.path.replace('$$', '$'))
-            }
-        }
-        new File('Domain/build/intermediates/classes/').eachFileRecurse { file ->
-            if (file.name.contains('$$')) {
-                file.renameTo(file.path.replace('$$', '$'))
-            }
-        }
-        new File('Presentation/build/intermediates/classes/').eachFileRecurse { file ->
+        applyDaggerWorkaround('App/build/intermediates/classes/')
+        applyDaggerWorkaround('Domain/build/intermediates/classes/')
+        applyDaggerWorkaround('Presentation/build/intermediates/classes/')
+    }
+    // avoid some side effects through revert renaming
+    doLast {
+        revertDaggerWorkaround('App/build/intermediates/classes/')
+        revertDaggerWorkaround('Domain/build/intermediates/classes/')
+        revertDaggerWorkaround('Presentation/build/intermediates/classes/')
+    }
+}
+
+def applyDaggerWorkaround(String pathWithDaggerClasses) {
+    def filePath = new File(pathWithDaggerClasses)
+    if (filePath.exists()) {
+        filePath.eachFileRecurse { file ->
             if (file.name.contains('$$')) {
                 file.renameTo(file.path.replace('$$', '$'))
             }
         }
     }
-    doLast {
-        new File('App/build/intermediates/classes/').eachFileRecurse { file ->
-            if (file.name.contains('$ModuleAdapter')) {
-                file.renameTo(file.path.replace('$ModuleAdapter', '$$ModuleAdapter'))
-            }
-        }
-        new File('Domain/build/intermediates/classes/').eachFileRecurse { file ->
-            if (file.name.contains('$ModuleAdapter')) {
-                file.renameTo(file.path.replace('$ModuleAdapter', '$$ModuleAdapter'))
-            }
-        }
-        new File('Presentation/build/intermediates/classes/').eachFileRecurse { file ->
+}
+def revertDaggerWorkaround(String pathWithDaggerClasses) {
+    def filePath = new File(pathWithDaggerClasses)
+    if (filePath.exists()) {
+        filePath.eachFileRecurse { file ->
             if (file.name.contains('$ModuleAdapter')) {
                 file.renameTo(file.path.replace('$ModuleAdapter', '$$ModuleAdapter'))
             }

@@ -2,7 +2,7 @@
  * Copyright (C) 2014 android10.org. All rights reserved.
  * @author Fernando Cejas (the android10 coder)
  */
-package com.example.presentation.page.userlist.view;
+package com.example.presentation.userlist;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -35,11 +35,6 @@ public class UsersAdapter extends BaseAdapter {
       count = this.usersCollection.size();
     }
     return count;
-  }
-
-  @Override
-  public boolean isEmpty() {
-    return (getCount() == 0);
   }
 
   @Override public Object getItem(int position) {

@@ -14,14 +14,14 @@ import com.example.presentation.R;
  */
 public class ErrorMessageFactory {
 
-   private enum ErrorMessage {
+   public enum ErrorMessage {
 
        Unexpected(ErrorBundle.Error.UnexpectedException, R.string.exception_message_generic),
        NoInternetConnection(ErrorBundle.Error.NetworkConnection, R.string.exception_message_no_connection),
        UserNotFound(ErrorBundle.Error.UserNotFound, R.string.exception_message_user_not_found);
 
-       final ErrorBundle.Error error;
-       final int message;
+       public final ErrorBundle.Error error;
+       public final int message;
 
        ErrorMessage(ErrorBundle.Error error, int message) {
            this.error = error;

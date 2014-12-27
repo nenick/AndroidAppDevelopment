@@ -2,7 +2,7 @@
  * Copyright (C) 2014 android10.org. All rights reserved.
  * @author Fernando Cejas (the android10 coder)
  */
-package com.example.presentation.page.userlist.view;
+package com.example.presentation.userlist;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -18,7 +18,6 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.presentation.R;
-import com.example.presentation.page.userlist.presenter.UserListPresenter;
 
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
@@ -82,6 +81,12 @@ public class UserListFragment extends Fragment implements UserListView {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         this.userListPresenter.initialize(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        userListPresenter.onViewDestroyed();
     }
 
     @Override

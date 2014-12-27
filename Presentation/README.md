@@ -61,7 +61,7 @@ Robolectric supports to take an activity and start it with lifecycle methods. Th
 a simulated running application with headless ui. But you can access ui elements and invoke action
 on them like click buttons, check title string, etc... This will slow down the test execution but
 
-### Basic: Just invoke methods on objects
+### Basic: Just invoke methods on objects (Current)
 
 Just instantiate new class object inject some mocks and invoke methods to test. Will be very fast
 but may need much time to create. E.g. onCreate() method will call super.onCreate() but this

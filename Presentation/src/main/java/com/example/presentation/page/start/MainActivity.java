@@ -1,13 +1,12 @@
 package com.example.presentation.page.start;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
 import com.example.presentation.R;
 import com.example.presentation.base.view.BaseActivity;
-import com.example.presentation.userlist.UserListActivity;
+import com.example.presentation.userlist.UserListActivity_;
 
 /**
  * Main application screen. This is the app entry point.
@@ -36,8 +35,7 @@ public class MainActivity extends BaseActivity {
      * Goes to the user list screen.
      */
     private void navigateToUserList() {
-        Intent intentToLaunch = UserListActivity.getCallingIntent(this);
-        startActivity(intentToLaunch);
+        new UserListActivity_.IntentBuilder_(this).start();
     }
 
     private final View.OnClickListener loadDataOnClickListener = new View.OnClickListener() {

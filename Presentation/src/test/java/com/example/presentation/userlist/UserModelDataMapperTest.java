@@ -1,14 +1,8 @@
-/**
- * Copyright (C) 2014 android10.org. All rights reserved.
- * @author Fernando Cejas (the android10 coder)
- */
-package com.example.presentation.page.userlist.presenter;
+package com.example.presentation.userlist;
 
 import com.example.presentation.PresentationSpec;
-import com.example.presentation.page.userlist.view.UserModel;
 import com.example.shared.model.User;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -25,12 +19,7 @@ public class UserModelDataMapperTest extends PresentationSpec {
     private static final int FAKE_USER_ID = 123;
     private static final String FAKE_FULLNAME = "Tony Stark";
 
-    private UserModelDataMapper userModelDataMapper;
-
-    @Before
-    public void setUp() throws Exception {
-        userModelDataMapper = new UserModelDataMapper();
-    }
+    private UserModelDataMapper userModelDataMapper = new UserModelDataMapper();
 
     @Test
     public void testTransformUser() {
@@ -47,7 +36,7 @@ public class UserModelDataMapperTest extends PresentationSpec {
         User mockUserOne = mock(User.class);
         User mockUserTwo = mock(User.class);
 
-        List<User> userList = new ArrayList<User>(5);
+        List<User> userList = new ArrayList<>(5);
         userList.add(mockUserOne);
         userList.add(mockUserTwo);
 

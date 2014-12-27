@@ -5,11 +5,9 @@
 package com.example.app.espresso.spec;
 
 import android.app.Fragment;
-import android.content.Intent;
 
 import com.example.app.espresso.support.EspressoSpec;
 import com.example.presentation.R;
-import com.example.presentation.userlist.UserListActivity;
 import com.example.presentation.userlist.UserListActivity_;
 import com.google.android.apps.common.testing.ui.espresso.Espresso;
 
@@ -23,13 +21,7 @@ public class UserListActivityTest extends EspressoSpec {
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        getActivity().startActivity(createTargetIntent());
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                getActivity().startActivity(createTargetIntent());
-            }
-        });
+        new UserListActivity_.IntentBuilder_(getActivity()).start();
         Espresso.closeSoftKeyboard();
     }
 
@@ -43,9 +35,5 @@ public class UserListActivityTest extends EspressoSpec {
         String actualTitle = getCurrentActivity().getTitle().toString().trim();
 
         assertThat(actualTitle, is("Users List"));
-    }
-
-    private Intent createTargetIntent() {
-        return UserListActivity_.getCallingIntent(getInstrumentation().getTargetContext());
     }
 }
