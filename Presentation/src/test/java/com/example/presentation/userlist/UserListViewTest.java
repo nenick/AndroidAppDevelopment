@@ -4,6 +4,7 @@ package com.example.presentation.userlist;
 import android.content.Intent;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.domain.interactor.GetUserListUseCase;
 import com.example.presentation.PresentationSpec;
@@ -13,10 +14,11 @@ import com.example.shared.exception.ErrorBundle;
 import com.example.shared.model.User;
 
 import org.fest.assertions.api.ANDROID;
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.robolectric.Robolectric;
-import org.robolectric.util.ActivityController;
+import org.robolectric.shadows.ShadowToast;
 
 import java.util.ArrayList;
 
@@ -26,68 +28,128 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 
-public class UserListActivityTest extends PresentationSpec {
-
+public class UserListViewTest extends PresentationSpec {
 
     UserListActivity userListActivity;
     ArrayList<User> userListResult;
     ArgumentCaptor<GetUserListUseCase.Callback> callbackArgumentCaptor = ArgumentCaptor.forClass(GetUserListUseCase.Callback.class);
-    ActivityController<UserListActivity_> activityController;
+
+    @Before
+    public void setUp() {
+        Robolectric.getBackgroundScheduler().pause();
+    }
 
     @Test
-    public void shouldShowUserList() {
-        givenStartedView();
+    public void shouldInitialGetUserListAtBackgroundWithProgressBar() {
+        givenStartedViewWithPendingTasks();
+        thenGetUserListStartedAtBackground();
         thenProgressBarIsVisible();
-
-        givenTwoUsersAsResult();
-        whenGetUserListReturn(userListResult);
-        thenUserListHasCount(userListResult.size());
-        thenProgressBarIsGone();
+        thenRetryOptionIsGone();
     }
 
     @Test
-    public void shouldStartUserDetails() {
-        givenStartedViewWithTwoUsers();
-        whenSelectUserOnListPosition(0);
-        thenUserDetailsIsStarted(userListResult.get(0).getUserId());
-
-        whenSelectUserOnListPosition(1);
-        thenUserDetailsIsStarted(userListResult.get(1).getUserId());
-    }
-
-    @Test
-    public void shouldProvideRetryOptionOnErrors() {
+    public void shouldRefreshUserListAtBackgroundWithProgressBar_WhenButtonClick() {
         givenStartedView();
-        whenGetUserListsFailed();
-        thenProgressBarIsGone();
-        thenRetryOptionIsVisible();
-
+        reset(domainModuleMock.getUserListUseCase);
         whenClickRefreshButton();
+        thenGetUserListStartedAtBackground();
         thenProgressBarIsVisible();
+        thenRetryOptionIsGone();
+    }
 
+    @Test
+    public void shouldShowRefreshFinishedAtInitial_WhenGetUserListSuccess() {
+        givenStartedViewWithPendingTasks();
+        thenProgressBarIsVisible();
+        thenRetryOptionIsGone();
         whenGetUserListsFinishedSuccessful();
         thenProgressBarIsGone();
         thenRetryOptionIsGone();
     }
 
     @Test
-    public void shouldUpdateList_WhenUserListRefresh() {
-        givenStartedViewWithTwoUsers();
-        thenUserListHasCount(userListResult.size());
-        reset(domainModuleMock.getUserListUseCase);
-
-        givenEmptyUserListAsResult();
+    public void shouldShowRefreshFinishedAtRefresh_WhenGetUserListSuccess() {
+        givenStartedView();
         whenClickRefreshButton();
+        thenRetryOptionIsGone();
+        thenProgressBarIsVisible();
+        whenGetUserListsFinishedSuccessful();
+        thenProgressBarIsGone();
+        thenRetryOptionIsGone();
+    }
+
+    @Test
+    public void shouldShowRefreshFinishedAtInitial_WhenGetUserListFailed() {
+        givenStartedViewWithPendingTasks();
+        thenProgressBarIsVisible();
+        thenRetryOptionIsGone();
+        whenGetUserListsFinishedFailed(ErrorBundle.Error.UnexpectedException);
+        thenProgressBarIsGone();
+        thenRetryOptionIsVisible();
+    }
+
+    @Test
+    public void shouldShowRefreshFinishedAtRefresh_WhenGetUserListFailed() {
+        givenStartedView();
+        thenProgressBarIsVisible();
+        thenRetryOptionIsGone();
+        whenClickRefreshButton();
+        whenGetUserListsFinishedFailed(ErrorBundle.Error.UnexpectedException);
+        thenProgressBarIsGone();
+        thenRetryOptionIsVisible();
+    }
+
+    @Test
+    public void shouldShowUsers_WhenGetUserListReturnsSome() {
+        givenStartedView();
+        givenTwoUsersAsResult();
         whenGetUserListReturn(userListResult);
         thenUserListHasCount(userListResult.size());
     }
 
     @Test
-    public void shouldNotCrashOnDestroyedView_WhenGetUserListReturns() {
-        Robolectric.getBackgroundScheduler().pause();
+    public void shouldStartUserDetails_WhenUserIsSelected() {
+        givenStartedViewWithTwoUsers();
+        whenSelectUserOnListPosition(0);
+        thenUserDetailsIsStarted(userListResult.get(0).getUserId());
+        whenSelectUserOnListPosition(1);
+        thenUserDetailsIsStarted(userListResult.get(1).getUserId());
+    }
+
+    @Test
+    public void shouldShowEmptyList_WhenGetUserListReturnEmpty() {
         givenStartedView();
-        activityController.pause().stop().destroy();
-        thenGetUserListWillNotCrash();
+        givenEmptyUserListAsResult();
+        whenGetUserListReturn(userListResult);
+        thenUserListHasCount(userListResult.size());
+    }
+
+    @Test
+    public void shouldUpdateList_WhenUserListRefresh() {
+        givenStartedViewWithTwoUsers();
+        whenClickRefreshButton();
+        givenTwoUsersAsResult();
+        userListResult.add(new User(3));
+        whenGetUserListReturn(userListResult);
+        thenUserListHasCount(userListResult.size());
+    }
+
+    @Test
+    public void shouldShowError_WhenGetUserListFailed_unexpected() {
+        givenStartedView();
+        whenGetUserListsFinishedFailed(ErrorBundle.Error.UnexpectedException);
+        Toast latestToast = ShadowToast.getLatestToast();
+        assertThat(latestToast).isNotNull();
+        assertThat(ShadowToast.getTextOfLatestToast()).isEqualTo("There was an application error");
+    }
+
+    @Test
+    public void shouldShowError_WhenGetUserListFailed_network() {
+        givenStartedView();
+        whenGetUserListsFinishedFailed(ErrorBundle.Error.NetworkConnection);
+        Toast latestToast = ShadowToast.getLatestToast();
+        assertThat(latestToast).isNotNull();
+        assertThat(ShadowToast.getTextOfLatestToast()).isEqualTo("There is no internet connection");
     }
 
     private void givenEmptyUserListAsResult() {
@@ -104,10 +166,15 @@ public class UserListActivityTest extends PresentationSpec {
         userListResult.add(user2);
     }
 
-    private void givenStartedView() {
-        activityController = Robolectric.buildActivity(UserListActivity_.class);
-        userListActivity = activityController.create().start().visible().resume().get();
+    private void givenStartedViewWithPendingTasks() {
+        userListActivity = Robolectric.buildActivity(UserListActivity_.class).create().start().visible().resume().get();
     }
+
+    private void givenStartedView() {
+        givenStartedViewWithPendingTasks();
+        Robolectric.runBackgroundTasks();
+    }
+
 
     private void givenStartedViewWithTwoUsers() {
         givenStartedView();
@@ -122,7 +189,7 @@ public class UserListActivityTest extends PresentationSpec {
         whenGetUserListReturn(userListResult);
     }
 
-    private void whenGetUserListsFailed() {
+    private void whenGetUserListsFinishedFailed(final ErrorBundle.Error error) {
         Robolectric.runBackgroundTasks();
         givenStartedViewWithTwoUsers();
         verify(domainModuleMock.getUserListUseCase).execute(callbackArgumentCaptor.capture());
@@ -134,7 +201,7 @@ public class UserListActivityTest extends PresentationSpec {
 
             @Override
             public Error getError() {
-                return Error.UnexpectedException;
+                return error;
             }
 
             @Override
@@ -159,8 +226,11 @@ public class UserListActivityTest extends PresentationSpec {
         assertThat(button.performClick()).isTrue();
     }
 
-    private void thenGetUserListWillNotCrash() {
+    private void thenGetUserListStartedAtBackground() {
         verify(domainModuleMock.getUserListUseCase, never()).execute(any(GetUserListUseCase.Callback.class));
+        assertThat(Robolectric.getBackgroundScheduler().enqueuedTaskCount()).isEqualTo(1);
+        Robolectric.getBackgroundScheduler().runOneTask();
+        verify(domainModuleMock.getUserListUseCase).execute(any(GetUserListUseCase.Callback.class));
     }
 
     private void thenUserListHasCount(int count) {
@@ -199,5 +269,4 @@ public class UserListActivityTest extends PresentationSpec {
         ListView userList = (ListView) userListActivity.findViewById(R.id.lv_users);
         Robolectric.shadowOf(userList).populateItems();
     }
-
 }

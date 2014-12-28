@@ -47,21 +47,29 @@ and say the view what it should do but not how to do.
 
 The value for writing tests on this module is to proof the UI behavior.
 
-There are different ways how this module may be tested and two basic ways which should be
-taken in combination with the other test ways.
+Testing UI is not easy to automate. Robolectric give you much support to simulate the UI but
+it's more complex and slower compared to other unit test styles.
+
+The MVP pattern should remove the test complexity. With this pattern you may avoid unit tests on
+UI implementation and focus on the behavior specified at presenter.
+
+There are different ways how this module may be tested.
 
 ### Don't test it
 
 You could take this decision because you will check this behavior on later test steps
 which include more application modules or at real system tests.
 
-### Basic: Driving the lifecycle with robolectric
+### Driving the lifecycle with robolectric
 
 Robolectric supports to take an activity and start it with lifecycle methods. This will give you
 a simulated running application with headless ui. But you can access ui elements and invoke action
 on them like click buttons, check title string, etc... This will slow down the test execution but
 
-### Basic: Just invoke methods on objects (Current)
+Classes with *ViewFunctionTest drive all view functionality, ignores special cases.
+Classes with *ViewTest will use lifecycle and produce alone very high coverage.
+
+### Just invoke methods on objects
 
 Just instantiate new class object inject some mocks and invoke methods to test. Will be very fast
 but may need much time to create. E.g. onCreate() method will call super.onCreate() but this
@@ -74,12 +82,16 @@ This way could drive into errors, which not belong to you. Missing network acces
 test data, etc .. But it will give you the most real feedback if your implementation is correct. To
 avoid some of the drawbacks you could inject mocked data modules.
 
-### Mock the dependencies to the Domain (Current)
+### Mock the dependencies to the Domain
 
 With dagger you have possibility to inject a mocked Domain module. Here you have big units, but
 you could see the activity, fragment, presenter combination as a one unit because the extra classes
 belongs to a micro architecture to get clean and maintainable code.
 
+This approach is used for lifecycle driving test.
+
 ### Class with mocked dependencies
 
 Common unit test style see also "Basic: Just invoke methods on objects"
+
+Classes with *PresenterTest will just use the presenter to verify the UI behavior.
