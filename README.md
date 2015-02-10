@@ -25,6 +25,13 @@ More simple project templates can be found at https://github.com/nenick/android-
 * Gradle Build Tools 1.0.0
 * Gradle 2.2.1
 
+## Getting Started
+
+* clone the project
+* open it with android studio
+* install the plugin https://github.com/evant/android-studio-unit-test-plugin
+* Run app or tests
+
 ## Test styles
 
 This project should show and compare some different testing styles. So this project have some
